@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - Volleyball</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="bg signup"></div>
+    <div class="overlay"></div>
+
+    <div class="card">
+      <div class="tabs">
+        <a href="./login.html" id="tabLogin" class="tab">Login</a>
+        <button id="tabSign" class="tab active">Sign Up</button>
+      </div>
+
+      <form id="formSign" class="form">
+        <div class="input-row">
+          <div class="input-icon">👤</div>
+          <input type="text" placeholder="Full name" required />
+        </div>
+
+        <div class="input-row">
+          <div class="input-icon">📧</div>
+          <input type="email" placeholder="E-mail" required />
+        </div>
+
+        <div class="input-row">
+          <div class="input-icon">🔒</div>
+          <input type="password" placeholder="Password" required />
+        </div>
+
+        <div class="input-row">
+          <div class="input-icon">🔑</div>
+          <input type="password" placeholder="Confirm password" required />
+        </div>
+
+        <button type="submit" class="btn">Create account</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
