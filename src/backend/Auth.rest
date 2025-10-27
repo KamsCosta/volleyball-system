@@ -1,0 +1,11 @@
+### Cadastrar Novo Usuário (Sign Up)
+
+POST http://localhost:5000/api/auth/signup
+Content-Type: application/json
+
+{
+    "name": "Kamilinha Dev",
+    "email": "kamilinha.restclient@teste.com",
+    "password": "SenhaSegura123",
+    "confirmPassword": "SenhaSegura123"
+}
