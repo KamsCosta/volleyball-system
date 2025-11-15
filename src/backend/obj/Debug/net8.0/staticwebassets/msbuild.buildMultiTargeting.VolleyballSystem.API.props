@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\VolleyballSystem.API.props" />
-</Project>

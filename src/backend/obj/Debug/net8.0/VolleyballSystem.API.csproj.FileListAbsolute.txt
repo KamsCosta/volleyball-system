@@ -44,11 +44,6 @@ C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\Volleyball
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\VolleyballSystem.API.sourcelink.json
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets.development.json
-C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets\msbuild.VolleyballSystem.API.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets\msbuild.build.VolleyballSystem.API.props
-C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.VolleyballSystem.API.props
-C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.VolleyballSystem.API.props
-C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\scopedcss\bundle\VolleyballSystem.API.styles.css
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\Volleyba.00DE083F.Up2Date
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\VolleyballSystem.API.dll
@@ -56,3 +51,10 @@ C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\refint\Vol
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\VolleyballSystem.API.pdb
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\VolleyballSystem.API.genruntimeconfig.cache
 C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\ref\VolleyballSystem.API.dll
+C:\Users\kamil\Desktop\volleyball-system\src\backend\bin\Debug\net8.0\VolleyballSystem.API.staticwebassets.endpoints.json
+C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\rjimswa.dswa.cache.json
+C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\kamil\Desktop\volleyball-system\src\backend\obj\Debug\net8.0\staticwebassets.build.endpoints.json

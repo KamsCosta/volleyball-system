@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "0gwqsh8UWYcZ94h2zYxGhnH1JT040jtOvwRmqo7497A=",
-  "Source": "VolleyballSystem.API",
-  "BasePath": "_content/VolleyballSystem.API",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"ke+QLjQYdjTKOVqUInGevhJ6zM7mv24+rD/aPvPR4Xg=","Source":"VolleyballSystem.API","BasePath":"_content/VolleyballSystem.API","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
