@@ -1,7 +1,7 @@
-/bin/
-/obj/
+# .NET build folders
+bin/
+obj/
+
+# vs code / rider
 .vscode/
-*.user
-*.log
-node_modules/
-.DS_Store
+.idea/
