@@ -7,33 +7,27 @@ using VolleyballSystem.API.DTO;
 namespace VolleyballSystem.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")] // Rota base: /api/auth
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
-
-        // DI: O AuthService é injetado automaticamente.
         public AuthController(AuthService authService)
         {
             _authService = authService;
         }
 
-        // ROTA: POST /api/auth/signup
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpRequest model)
         {
-            // O ASP.NET Core verifica automaticamente se o DTO é válido ([Required], [Compare]).
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); // Retorna 400 Bad Request
+                return BadRequest(ModelState);
             }
 
             try
             {
-                // Chama a lógica de negócio no Serviço
                 var user = await _authService.RegisterUser(model);
 
-                // Retorna 201 Created (Criado com sucesso)
                 return StatusCode(201, new
                 {
                     id = user.Id,
@@ -43,13 +37,34 @@ namespace VolleyballSystem.API.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                // Captura a exceção lançada pelo Service (ex: "e-mail já em uso")
-                return BadRequest(new { message = ex.Message }); // Retorna 400
+                return BadRequest(new { message = ex.Message });
             }
         }
+        [HttpPost("login")]
 
-        // *Em breve, você adicionaria o endpoint de Login aqui!*
-        // [HttpPost("login")]
-        // public IActionResult Login(...) { ... }
+            public async Task<IActionResult> Login([FromBody] LoginRequest model)
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                try
+                {
+                    var user = await _authService.LoginUser(model);
+
+                    return Ok(new
+                    {
+                        id = user.Id,
+                        name = user.Name,
+                        email = user.Email,
+                        message = "Login realizado com sucesso!"
+                    });
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return BadRequest(new { message = ex.Message });
+                }
+            }                 
     }
 }

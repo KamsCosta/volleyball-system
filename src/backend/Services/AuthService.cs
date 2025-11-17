@@ -10,17 +10,13 @@ namespace VolleyballSystem.API.Services
     public class AuthService
     {
         private readonly ApplicationDbContext _context;
-
-        // DI: O DbContext é injetado automaticamente
         public AuthService(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // Método para registrar um novo usuário
         public async Task<User> RegisterUser(SignUpRequest request)
         {
-            // 1. Verifica se o e-mail já está em uso (regra de negócio)
             bool emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
             if (emailExists)
             {
@@ -36,20 +32,32 @@ namespace VolleyballSystem.API.Services
                 CreatedAt = DateTime.UtcNow
             };
 
-            // 4. Salva no banco e retorna o usuário
             _context.Users.Add(newUser);
-            await _context.SaveChangesAsync(); // Finaliza a operação (INSERT)
+            await _context.SaveChangesAsync();
 
             return newUser;
         }
 
-        // Exemplo simples de hashing (substituir por BCrypt/Argon2!)
         private string HashPassword(string password)
         {
             return $"HASH_SECRET_{password.GetHashCode()}";
         }
+        
+        public async Task<User> LoginUser (LoginRequest request)
 
-        // *Em breve, você adicionaria o método de Login aqui!*
-        // public async Task<string> LoginUser(...) { ... }
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (user == null)
+                throw new InvalidOperationException("usuário não encontrado.");
+            
+            string hashedPassword = HashPassword(request.Password);
+
+            if (user.PasswordHash !=hashedPassword)
+                throw new InvalidOperationException("Senha incorreta.");
+            
+            return user;
+
+        }
     }
 }
