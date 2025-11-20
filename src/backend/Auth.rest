@@ -4,10 +4,10 @@ POST http://localhost:5000/api/auth/signup
 Content-Type: application/json
 
 {
-    "name": "Kamilinha Dev",
-    "email": "kamilinha.restclient@teste.com",
-    "password": "SenhaSegura123",
-    "confirmPassword": "SenhaSegura123"
+  "name": "Kamilinha Dev",
+  "email": "kamilinha@testedev.com",
+  "password": "SenhaSegura123",
+  "confirmPassword": "SenhaSegura123"
 }
 
 ###
@@ -17,6 +17,6 @@ Post http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
-    "emai":"kamilinha.restclient@teste.com",
+    "email": "kamilinha@testedev.com",
     "password": "SenhaSegura123"
 }

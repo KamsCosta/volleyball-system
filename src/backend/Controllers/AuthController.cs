@@ -56,6 +56,7 @@ namespace VolleyballSystem.API.Controllers
                     id = user.Id,
                     name = user.Name,
                     email = user.Email,
+                    token = user.Token, // 👈 AQUI o token!
                     message = "Login realizado com sucesso!"
                 });
             }
@@ -63,7 +64,7 @@ namespace VolleyballSystem.API.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-        } 
+        }
 
         [Authorize]
         [HttpGet("protected")]
@@ -76,4 +77,3 @@ namespace VolleyballSystem.API.Controllers
         }
     }
 }
-
