@@ -75,5 +75,20 @@ namespace VolleyballSystem.API.Controllers
                 message = "Acesso permitido! Seu token é válido :)"
             });
         }
+    
+        [Authorize]
+        [HttpGet("test")]
+        public IActionResult TestToken()
+        {
+            return Ok(new
+            {
+                message = "Token válido! 🎉",
+                user = new {
+                    Id = User.FindFirst("sub")?.Value,
+                    Email = User.FindFirst("email")?.Value,
+                    Name = User.FindFirst("name")?.Value
+                }
+            });
+        }
     }
 }
