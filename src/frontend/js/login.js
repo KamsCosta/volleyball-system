@@ -1,34 +1,63 @@
-import { login } from "./api/auth.js"; 
-import API_URL from "./api/config.js";
+import { login } from "./auth.js";
 
-// Pega o formulário
-const formLogin = document.getElementById("formLogin");
+const form = document.getElementById("formLogin");
+const btn = form.querySelector(".btn");
 
-// Quando enviar o formulário
-formLogin.addEventListener("submit", async (e) => {
-    e.preventDefault();
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
 
-    // Pega os inputs do front
-    const email = formLogin.querySelector("input[type='text']").value;
-    const password = formLogin.querySelector("input[type='password']").value;
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  removeMessage();
 
-    // Monta o corpo para a API
-    const data = { email, password };
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
-    // Chama a API de login
-    const response = await login(data);
+  if (!email || !password) {
+    showMessage("Please fill in all fields.", "error");
+    return;
+  }
 
-    // Caso dê erro:
-    if (response.message && response.token === undefined) {
-        alert("Erro no login: " + response.message);
-        return;
+  setLoading(true, "Signing in...");
+
+  try {
+    const response = await login({ email, password });
+
+    if (!response.token) {
+      showMessage(response.message || "Invalid credentials.", "error");
+      return;
     }
 
-    // Salva o token
     localStorage.setItem("token", response.token);
+    showMessage("Login successful! Redirecting...", "success");
 
-    alert("Login realizado com sucesso! Token salvo!");
-
-    // Redirecionar para página protegida
-    window.location.href = "./dashboard.html";
+    setTimeout(() => {
+      window.location.href = "./dashboard.html";
+    }, 1200);
+  } catch (error) {
+    showMessage(error.message || "Error connecting to the server.", "error");
+  } finally {
+    setLoading(false, "Login");
+  }
 });
+
+function setLoading(loading, text) {
+  btn.disabled = loading;
+  btn.textContent = text;
+}
+
+function showMessage(message, type) {
+  removeMessage();
+
+  const div = document.createElement("div");
+  div.id = "formMsg";
+  div.className = `form-message ${type}`;
+  div.textContent = message;
+
+  form.insertBefore(div, form.firstChild);
+}
+
+function removeMessage() {
+  const oldMessage = document.getElementById("formMsg");
+  if (oldMessage) oldMessage.remove();
+}

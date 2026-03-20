@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign Up - Volleyball</title>
-  <link rel="stylesheet" href="../css/styles.css" />
+  <title>Sign Up - Volleyball System</title>
+  <link rel="stylesheet" href="../css/signup.css" />
 </head>
 <body>
   <div class="page">
@@ -13,37 +13,63 @@
 
     <div class="card">
       <div class="tabs">
-        <a href="./login.html" id="tabLogin" class="tab">Login</a>
-        <button id="tabSign" class="tab active">Sign Up</button>
+        <a href="./login.html" class="tab">Login</a>
+        <button type="button" class="tab active">Sign Up</button>
       </div>
 
-      <form id="formSign" class="form">
+      <h2 class="form-title">Create Account </h2>
+      <p class="form-subtitle">Join the Volleyball System</p>
+
+      <form id="formSignup" class="form">
         <div class="input-row">
           <div class="input-icon">👤</div>
-          <input type="text" placeholder="Full name" required />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Full Name"
+            required
+          />
         </div>
 
         <div class="input-row">
           <div class="input-icon">📧</div>
-          <input type="email" placeholder="E-mail" required />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="E-mail"
+            required
+          />
         </div>
 
         <div class="input-row">
           <div class="input-icon">🔒</div>
-          <input type="password" placeholder="Password" required />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
         </div>
 
         <div class="input-row">
-          <div class="input-icon">🔑</div>
-          <input type="password" placeholder="Confirm password" required />
+          <div class="input-icon">🔐</div>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            required
+          />
         </div>
 
-        <button type="submit" class="btn">Create account</button>
+        <button type="submit" class="btn">Create Account</button>
       </form>
     </div>
   </div>
 
   <script type="module" src="../js/signup.js"></script>
-  
 </body>
 </html>

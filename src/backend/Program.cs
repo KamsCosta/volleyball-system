@@ -30,7 +30,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// JWT AUTH
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
