@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Players - Volleyball System</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="bg login"></div>
+    <div class="overlay"></div>
+
+    <div class="crud-container">
+      <div class="crud-header">
+        <h1>Players Management</h1>
+        <div class="crud-actions">
+          <a href="./dashboard.html" class="btn secondary-btn">← Dashboard</a>
+          <button id="logoutBtn" class="btn danger-btn">Logout</button>
+        </div>
+      </div>
+
+      <div class="crud-card">
+        <h2 id="formTitle">Add New Player</h2>
+
+        <form id="playerForm" class="crud-form">
+          <input type="hidden" id="playerId" />
+
+          <div class="form-grid">
+            <div class="input-row">
+              <div class="input-icon">🏐</div>
+              <input type="text" id="name" placeholder="Player Name" required />
+            </div>
+
+            <div class="input-row">
+              <div class="input-icon">📍</div>
+              <input type="text" id="position" placeholder="Position (Setter, Libero...)" required />
+            </div>
+
+            <div class="input-row">
+              <div class="input-icon">#️⃣</div>
+              <input type="number" id="number" placeholder="Number" min="1" max="99" required />
+            </div>
+
+            <div class="input-row">
+              <div class="input-icon">📏</div>
+              <input type="number" id="height" placeholder="Height (cm)" min="100" max="250" required />
+            </div>
+          </div>
+
+          <div class="crud-form-actions">
+            <button type="submit" class="btn" id="saveBtn">Save Player</button>
+            <button type="button" class="btn secondary-btn" id="cancelEditBtn" style="display:none;">
+              Cancel Edit
+            </button>
+          </div>
+        </form>
+
+        <div id="formMsg"></div>
+      </div>
+
+      <div class="crud-card">
+        <h2>Players List</h2>
+        <div class="table-wrapper">
+          <table class="players-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Number</th>
+                <th>Height</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="playersTableBody">
+              <tr>
+                <td colspan="6" class="empty-state">Loading players...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/players.js"></script>
+</body>
+</html>

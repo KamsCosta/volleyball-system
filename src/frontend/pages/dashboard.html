@@ -1,273 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard – Volleyball Performance</title>
-  <link rel="stylesheet" href="../css/dashboard.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard – Volleyball Performance</title>
+<style>
+:root {
+  --bg-deep:       #050d1a;
+  --bg-sidebar:    #071428;
+  --bg-main:       #091830;
+  --bg-card:       #0d2145;
+  --bg-card-hover: #102654;
+  --accent:        #4e8fff;
+  --accent-dim:    #1a3f7a;
+  --text-primary:  #e8eef8;
+  --text-muted:    #6a85b0;
+  --text-subtle:   #3d5a8a;
+  --border:        #122350;
+  --border-light:  #1a3265;
+  --icon-athletes: #4e8fff;
+  --icon-coaches:  #38c4b0;
+  --icon-tests:    #a78bfa;
+  --icon-results:  #f59e42;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg-deep); color:var(--text-primary); font-family:Arial,sans-serif; height:100vh; overflow:hidden; }
+.layout { display:flex; height:100vh; }
+
+/* SIDEBAR */
+.sidebar { width:220px; min-width:220px; background:var(--bg-sidebar); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:24px 0; position:relative; }
+.sidebar::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),transparent); }
+.sidebar-top { padding:0 18px 22px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+.brand { display:flex; align-items:center; gap:10px; }
+.brand-emoji { font-size:28px; line-height:1; }
+.brand-name { font-size:12px; color:var(--text-muted); line-height:1.3; text-transform:uppercase; letter-spacing:0.04em; }
+.brand-name strong { display:block; font-size:14px; color:var(--text-primary); font-weight:700; }
+.sidebar-nav { flex:1; display:flex; flex-direction:column; padding:0 10px; gap:2px; }
+.nav-item { display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:6px; text-decoration:none; font-size:13px; font-weight:500; color:var(--text-muted); transition:background 0.15s,color 0.15s; }
+.nav-item svg { width:16px; height:16px; flex-shrink:0; }
+.nav-item:hover { background:var(--accent-dim); color:var(--text-primary); }
+.nav-item.active { background:var(--accent-dim); color:var(--accent); font-weight:600; }
+.nav-divider { height:1px; background:var(--border); margin:8px 12px; }
+.logout-btn { display:flex; align-items:center; gap:10px; margin:0 10px; padding:10px 12px; background:none; border:1px solid var(--border); border-radius:6px; color:var(--text-muted); font-size:13px; cursor:pointer; transition:border-color 0.15s,color 0.15s,background 0.15s; }
+.logout-btn svg { width:16px; height:16px; flex-shrink:0; }
+.logout-btn:hover { border-color:#e05555; color:#e05555; background:rgba(224,85,85,0.06); }
+
+/* MAIN */
+.main {
+  flex:1; background:var(--bg-main);
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(78,143,255,0.05) 79px,rgba(78,143,255,0.05) 80px),
+    repeating-linear-gradient(90deg,transparent,transparent 119px,rgba(78,143,255,0.05) 119px,rgba(78,143,255,0.05) 120px),
+    linear-gradient(90deg,transparent calc(50% - 0.5px),rgba(78,143,255,0.09) calc(50% - 0.5px),rgba(78,143,255,0.09) calc(50% + 0.5px),transparent calc(50% + 0.5px));
+  overflow-y:auto; padding:0;
+}
+.main::-webkit-scrollbar { width:5px; }
+.main::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:3px; }
+
+/* HERO */
+.hero {
+  position:relative; width:100%; height:165px; overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.hero-img {
+  position:absolute; inset:0;
+  background-image: url("../assets/images/hero-bg.jpg");
+  background-size: cover;
+  background-position: center 35%;
+  filter: brightness(0.38) saturate(0.85);
+}
+.hero-gradient {
+  position:absolute; inset:0;
+  background: linear-gradient(to bottom, rgba(9,24,48,0.1) 0%, rgba(9,24,48,0.5) 70%, rgba(9,24,48,1) 100%);
+}
+.hero-content {
+  position:relative; z-index:2; height:100%;
+  display:flex; align-items:flex-end; justify-content:space-between;
+  padding:0 40px 24px;
+}
+.hero-content h1 { font-size:30px; font-weight:700; color:var(--text-primary); line-height:1.1; }
+.hero-content p { font-size:12.5px; color:var(--text-muted); margin-top:4px; }
+.header-badge { display:flex; align-items:center; gap:7px; font-size:12px; color:var(--text-muted); background:rgba(13,33,69,0.85); border:1px solid var(--border); padding:6px 12px; border-radius:20px; backdrop-filter:blur(8px); }
+.badge-dot { width:7px; height:7px; background:#38c4b0; border-radius:50%; animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* CONTENT */
+.content { padding:22px 40px 40px; }
+.stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
+.stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:18px; transition:border-color 0.2s,background 0.2s; position:relative; overflow:hidden; }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; opacity:0.8; }
+.stat-card.c-athletes::before { background:linear-gradient(90deg,var(--icon-athletes),transparent); }
+.stat-card.c-coaches::before  { background:linear-gradient(90deg,var(--icon-coaches),transparent); }
+.stat-card.c-tests::before    { background:linear-gradient(90deg,var(--icon-tests),transparent); }
+.stat-card.c-results::before  { background:linear-gradient(90deg,var(--icon-results),transparent); }
+.stat-card:hover { background:var(--bg-card-hover); border-color:var(--border-light); }
+.stat-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.stat-label { font-size:11.5px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.06em; }
+.stat-icon { width:32px; height:32px; border-radius:6px; display:flex; align-items:center; justify-content:center; }
+.stat-icon svg { width:16px; height:16px; }
+.stat-icon.athletes { background:rgba(78,143,255,0.18); color:var(--icon-athletes); }
+.stat-icon.coaches  { background:rgba(56,196,176,0.18); color:var(--icon-coaches); }
+.stat-icon.tests    { background:rgba(167,139,250,0.18); color:var(--icon-tests); }
+.stat-icon.results  { background:rgba(245,158,66,0.18);  color:var(--icon-results); }
+.stat-value { font-size:40px; font-weight:700; line-height:1; color:var(--text-primary); margin-bottom:6px; }
+.stat-trend { font-size:11px; color:var(--text-subtle); }
+
+.lower-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.panel { background:var(--bg-card); border:1px solid var(--border); border-radius:8px; padding:22px; }
+.panel-header { margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+.panel-header h3 { font-size:14px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-primary); }
+.quick-actions { display:flex; flex-direction:column; gap:9px; }
+.action-btn { display:flex; align-items:center; gap:10px; width:100%; padding:10px 14px; background:var(--accent-dim); border:1px solid transparent; border-radius:6px; color:var(--text-primary); font-size:13px; font-weight:500; cursor:pointer; text-align:left; transition:background 0.15s,border-color 0.15s; }
+.action-btn svg { width:15px; height:15px; color:var(--accent); flex-shrink:0; }
+.action-btn:hover { background:var(--accent); border-color:var(--accent); }
+.action-btn:hover svg { color:white; }
+.empty-state { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:28px 0; text-align:center; }
+.empty-icon { width:36px; height:36px; color:var(--text-subtle); }
+.empty-state p { font-size:13px; line-height:1.6; color:var(--text-muted); }
+
+@media (max-width:1100px) { .stats-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:900px)  { .lower-grid { grid-template-columns:1fr; } .sidebar { width:200px; min-width:200px; } }
+@media (max-width:700px)  {
+  body{overflow:auto;} .layout{flex-direction:column;height:auto;}
+  .sidebar{width:100%;min-width:unset;padding:14px 16px;}
+  .sidebar-nav{flex-direction:row;flex-wrap:wrap;padding:0;gap:4px;}
+  .nav-divider{display:none;}
+  .hero-content{padding:0 20px 20px;}
+  .content{padding:18px 16px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
 </head>
 <body>
-  <div class="layout">
+<div class="layout">
 
-    <aside class="sidebar">
-      <div class="sidebar-top">
-        <div class="brand">
-          <svg class="brand-icon" viewBox="0 0 256 240" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="bl2" cx="35%" cy="28%" r="70%">
-                <stop offset="0%" stop-color="#fff" stop-opacity="0.35"/>
-                <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-              </radialGradient>
-              <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#2f7df6"/>
-                <stop offset="100%" stop-color="#1d5fd6"/>
-              </linearGradient>
-              <linearGradient id="yg2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#f6d94d"/>
-                <stop offset="100%" stop-color="#dcb20f"/>
-              </linearGradient>
-              <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#f8fafc"/>
-                <stop offset="100%" stop-color="#cfd6df"/>
-              </linearGradient>
-              <clipPath id="bc2">
-                <circle cx="128" cy="120" r="92"/>
-              </clipPath>
-            </defs>
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <span class="brand-emoji">🏐</span>
+        <span class="brand-name">Volleyball<br><strong>Performance</strong></span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z"/></svg>
+        Home
+      </a>
+      <a href="#" class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/><path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/><path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/></svg>
+        Athletes
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12H15M9 16H13"/></svg>
+        Test List
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/><path d="M19 3V7M17 5H21"/></svg>
+        New Athlete
+      </a>
+      <div class="nav-divider"></div>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/></svg>
+        Profile
+      </a>
+    </nav>
+    <button id="logoutBtn" class="logout-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17L21 12M21 12L16 7M21 12H9"/><path d="M9 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H9"/></svg>
+      Logout
+    </button>
+  </aside>
 
-            <circle cx="128" cy="120" r="92" fill="#f2f4f7" stroke="#1f2937" stroke-width="3"/>
-            <g clip-path="url(#bc2)">
-              <path d="M36 118 C44 70,74 38,114 30 C95 50,86 75,86 105 C86 130,76 152,58 172 C42 158,34 138,36 118Z" fill="url(#yg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M76 40 C96 30,122 30,146 36 C130 52,120 72,116 98 C106 96,96 96,86 98 C86 74,92 54,76 40Z" fill="url(#lg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M118 34 C152 34,182 48,204 74 C190 80,176 94,164 112 C150 102,134 98,116 98 C120 72,130 52,146 36 C136 34,126 34,118 34Z" fill="url(#bg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M204 74 C218 92,224 114,220 138 C206 122,190 110,172 104 C180 92,192 82,204 74Z" fill="url(#lg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M32 112 C56 102,82 100,110 102 C128 104,144 110,158 120 C146 132,136 146,130 162 C102 152,70 148,34 148 C30 136,30 124,32 112Z" fill="url(#bg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M34 148 C70 148,102 152,130 162 C124 176,122 190,124 204 C96 208,70 202,48 188 C40 176,36 162,34 148Z" fill="url(#lg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M158 120 C180 134,196 156,206 182 C196 196,182 206,166 212 C158 190,146 174,130 162 C136 146,146 132,158 120Z" fill="url(#bg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M124 204 C146 202,166 204,186 198 C182 206,176 214,166 220 C142 228,116 230,92 224 C76 220,60 210,48 188 C70 202,96 208,124 204Z" fill="url(#yg2)" stroke="#1f2937" stroke-width="3"/>
-              <path d="M220 138 C218 156,214 170,206 182 C196 156,180 134,158 120 C164 112,168 108,172 104 C190 110,206 122,220 138Z" fill="url(#yg2)" stroke="#1f2937" stroke-width="3"/>
-              <circle cx="128" cy="120" r="92" fill="url(#bl2)"/>
-              <ellipse cx="86" cy="72" rx="12" ry="18" fill="#fff" opacity="0.55" transform="rotate(-25 86 72)"/>
-            </g>
-            <circle cx="128" cy="120" r="92" fill="none" stroke="#1f2937" stroke-width="3"/>
-          </svg>
+  <main class="main">
+    <div class="hero">
+      <div class="hero-img"></div>
+      <div class="hero-gradient"></div>
+      <div class="hero-content">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Welcome to your volleyball performance tracking system</p>
+        </div>
+        <div class="header-badge">
+          <span class="badge-dot"></span>
+          System Active
+        </div>
+      </div>
+    </div>
 
-          <span class="brand-name">
-            Volleyball
-            <strong>Performance</strong>
-          </span>
+    <div class="content">
+      <div class="stats-grid">
+        <div class="stat-card c-athletes">
+          <div class="stat-top"><span class="stat-label">Total Athletes</span><div class="stat-icon athletes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/><path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/><path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/></svg></div></div>
+          <h2 class="stat-value" id="totalAthletes">0</h2><span class="stat-trend">No data yet</span>
+        </div>
+        <div class="stat-card c-coaches">
+          <div class="stat-top"><span class="stat-label">Total Coaches</span><div class="stat-icon coaches"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/></svg></div></div>
+          <h2 class="stat-value" id="totalCoaches">0</h2><span class="stat-trend">No data yet</span>
+        </div>
+        <div class="stat-card c-tests">
+          <div class="stat-top"><span class="stat-label">Available Tests</span><div class="stat-icon tests"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12H15M9 16H13"/></svg></div></div>
+          <h2 class="stat-value" id="tests">0</h2><span class="stat-trend">No data yet</span>
+        </div>
+        <div class="stat-card c-results">
+          <div class="stat-top"><span class="stat-label">Test Results</span><div class="stat-icon results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div></div>
+          <h2 class="stat-value" id="results">0</h2><span class="stat-trend">No data yet</span>
         </div>
       </div>
 
-      <nav class="sidebar-nav">
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z"/>
-          </svg>
-          Home
-        </a>
-
-        <a href="#" class="nav-item active">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <rect x="3" y="3" width="7" height="7" rx="1"/>
-            <rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/>
-            <rect x="14" y="14" width="7" height="7" rx="1"/>
-          </svg>
-          Dashboard
-        </a>
-
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <circle cx="9" cy="7" r="4"/>
-            <path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/>
-            <path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/>
-            <path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/>
-          </svg>
-          Athletes
-        </a>
-
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/>
-            <rect x="9" y="3" width="6" height="4" rx="1"/>
-            <path d="M9 12H15M9 16H13"/>
-          </svg>
-          Test List
-        </a>
-
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <circle cx="12" cy="8" r="4"/>
-            <path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/>
-            <path d="M19 3V7M17 5H21"/>
-          </svg>
-          New Athlete
-        </a>
-
-        <div class="nav-divider"></div>
-
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-          </svg>
-          Settings
-        </a>
-
-        <a href="#" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-            <circle cx="12" cy="8" r="4"/>
-            <path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/>
-          </svg>
-          Profile
-        </a>
-      </nav>
-
-      <button id="logoutBtn" class="logout-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M16 17L21 12M21 12L16 7M21 12H9"/>
-          <path d="M9 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H9"/>
-        </svg>
-        Logout
-      </button>
-    </aside>
-
-    <main class="main">
-      <div class="hero">
-        <canvas id="heroCanvas"></canvas>
-
-        <div class="hero-content">
-          <div>
-            <h1>Dashboard</h1>
-            <p>Welcome to your volleyball performance tracking system</p>
+      <div class="lower-grid">
+        <div class="panel">
+          <div class="panel-header"><h3>Quick Actions</h3></div>
+          <div class="quick-actions">
+            <button class="action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/><path d="M19 3V7M17 5H21"/></svg>Add New Athlete</button>
+            <button class="action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>View Test List</button>
+            <button class="action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/><path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/><path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/></svg>Manage Athletes</button>
           </div>
-
-          <div class="header-badge">
-            <span class="badge-dot"></span>
-            System Active
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h3>Recent Activity</h3></div>
+          <div class="empty-state">
+            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9" stroke-dasharray="4 3"/><path d="M12 8V12L14 14" stroke-linecap="round"/></svg>
+            <p>No recent activity to display.<br>Start by adding athletes and creating tests.</p>
           </div>
         </div>
       </div>
+    </div>
+  </main>
+</div>
 
-      <div class="content">
-        <div class="stats-grid">
-          <div class="stat-card c-athletes">
-            <div class="stat-top">
-              <span class="stat-label">Total Athletes</span>
-              <div class="stat-icon athletes">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/>
-                  <path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/>
-                  <path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/>
-                </svg>
-              </div>
-            </div>
-            <h2 class="stat-value" id="totalAthletes">0</h2>
-            <span class="stat-trend">No data yet</span>
-          </div>
+<script>
+const token = localStorage.getItem("token");
+if (!token) {
+    window.location.href = "./login.html";
+} else {
+    init();
+}
 
-          <div class="stat-card c-coaches">
-            <div class="stat-top">
-              <span class="stat-label">Total Coaches</span>
-              <div class="stat-icon coaches">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                  <circle cx="12" cy="8" r="4"/>
-                  <path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/>
-                </svg>
-              </div>
-            </div>
-            <h2 class="stat-value" id="totalCoaches">0</h2>
-            <span class="stat-trend">No data yet</span>
-          </div>
-
-          <div class="stat-card c-tests">
-            <div class="stat-top">
-              <span class="stat-label">Available Tests</span>
-              <div class="stat-icon tests">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                  <path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/>
-                  <rect x="9" y="3" width="6" height="4" rx="1"/>
-                  <path d="M9 12H15M9 16H13"/>
-                </svg>
-              </div>
-            </div>
-            <h2 class="stat-value" id="tests">0</h2>
-            <span class="stat-trend">No data yet</span>
-          </div>
-
-          <div class="stat-card c-results">
-            <div class="stat-top">
-              <span class="stat-label">Test Results</span>
-              <div class="stat-icon results">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                </svg>
-              </div>
-            </div>
-            <h2 class="stat-value" id="results">0</h2>
-            <span class="stat-trend">No data yet</span>
-          </div>
-        </div>
-
-        <div class="lower-grid">
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Quick Actions</h3>
-            </div>
-
-            <div class="quick-actions">
-              <button class="action-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                  <circle cx="12" cy="8" r="4"/>
-                  <path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/>
-                  <path d="M19 3V7M17 5H21"/>
-                </svg>
-                Add New Athlete
-              </button>
-
-              <button class="action-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                  <path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/>
-                  <rect x="9" y="3" width="6" height="4" rx="1"/>
-                </svg>
-                View Test List
-              </button>
-
-              <button class="action-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/>
-                  <path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/>
-                  <path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/>
-                </svg>
-                Manage Athletes
-              </button>
-            </div>
-          </div>
-
-          <div class="panel">
-            <div class="panel-header">
-              <h3>Recent Activity</h3>
-            </div>
-
-            <div class="empty-state">
-              <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-                <circle cx="12" cy="12" r="9" stroke-dasharray="4 3"/>
-                <path d="M12 8V12L14 14" stroke-linecap="round"/>
-              </svg>
-              <p>
-                No recent activity to display.<br />
-                Start by adding athletes and creating tests.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <script type="module" src="../js/dashboard.js"></script>
+function init() {
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "./login.html";
+    });
+}
+</script>
 </body>
 </html>

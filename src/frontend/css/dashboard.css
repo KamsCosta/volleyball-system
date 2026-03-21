@@ -1,601 +1,245 @@
-/* =========================
-   CSS VARIABLES
-========================= */
-:root {
-  --bg-deep:       #050d1a;
-  --bg-sidebar:    #071428;
-  --bg-main:       #091830;
-  --bg-card:       #0d2145;
-  --bg-card-hover: #102654;
-  --accent:        #4e8fff;
-  --accent-dim:    #1a3f7a;
-  --text-primary:  #e8eef8;
-  --text-muted:    #6a85b0;
-  --text-subtle:   #3d5a8a;
-  --border:        #122350;
-  --border-light:  #1a3265;
-
-  --icon-athletes: #4e8fff;
-  --icon-coaches:  #38c4b0;
-  --icon-tests:    #a78bfa;
-  --icon-results:  #f59e42;
-}
-
-/* =========================
-   RESET
-========================= */
-*,
-*::before,
-*::after {
+/* ===== RESET ===== */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-/* =========================
-   BODY
-========================= */
-html,
-body {
-  width: 100%;
-  height: 100%;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
-  background: var(--bg-deep);
-  color: var(--text-primary);
-  font-family: Arial, sans-serif;
-  overflow: hidden;
+  background: #0b0f19;
+  color: #ffffff;
+  min-height: 100vh;
 }
 
-/* =========================
-   LAYOUT
-========================= */
-.layout {
+/* ===== LAYOUT ===== */
+.dashboard-layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  background: #0a1f4d;
 }
 
-/* =========================
-   SIDEBAR
-========================= */
+/* ===== SIDEBAR ===== */
 .sidebar {
-  width: 230px;
-  min-width: 230px;
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border);
+  width: 250px;
+  background: #041c4a;
+  border-right: 1px solid rgba(80, 140, 255, 0.35);
   display: flex;
   flex-direction: column;
-  padding: 24px 0;
-  position: relative;
+  justify-content: space-between;
+  padding: 1.5rem 1rem;
 }
 
-.sidebar::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-.sidebar-top {
-  padding: 0 20px 28px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 16px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-icon {
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-}
-
-.brand-name {
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.3;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.brand-name strong {
-  display: block;
-  font-size: 15px;
-  color: var(--text-primary);
-  font-weight: 700;
+.sidebar-brand h2 {
+  font-size: 1.15rem;
+  color: #4ea1ff;
+  margin-bottom: 2rem;
+  line-height: 1.4;
 }
 
 .sidebar-nav {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 12px;
-  gap: 2px;
+  gap: 0.6rem;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: 6px;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
   text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 500;
-  color: var(--text-muted);
-  transition: background 0.15s, color 0.15s;
-}
-
-.nav-item svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  opacity: 0.7;
-  transition: opacity 0.15s;
+  color: #9ec3ff;
+  font-size: 0.98rem;
+  transition: all 0.25s ease;
 }
 
 .nav-item:hover {
-  background: var(--accent-dim);
-  color: var(--text-primary);
-}
-
-.nav-item:hover svg {
-  opacity: 1;
+  background: rgba(78, 161, 255, 0.08);
+  color: #ffffff;
 }
 
 .nav-item.active {
-  background: var(--accent-dim);
-  color: var(--accent);
-  font-weight: 600;
+  background: rgba(78, 161, 255, 0.15);
+  border: 1px solid rgba(78, 161, 255, 0.35);
+  color: #ffffff;
 }
 
-.nav-item.active svg {
-  opacity: 1;
-  color: var(--accent);
+.icon {
+  font-size: 1.1rem;
 }
 
-.nav-divider {
-  height: 1px;
-  background: var(--border);
-  margin: 10px 12px;
+.sidebar-footer {
+  margin-top: 2rem;
 }
 
 .logout-btn {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 12px;
-  padding: 10px 12px;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text-muted);
-  font-size: 13.5px;
-  font-weight: 500;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #ffffff;
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-}
-
-.logout-btn svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
+  font-size: 1rem;
+  transition: all 0.25s ease;
 }
 
 .logout-btn:hover {
-  border-color: #e05555;
-  color: #e05555;
-  background: rgba(224, 85, 85, 0.06);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* =========================
-   MAIN
-========================= */
-.main {
+/* ===== MAIN CONTENT ===== */
+.main-content {
   flex: 1;
-  background: var(--bg-main);
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 79px,
-      rgba(78, 143, 255, 0.05) 79px,
-      rgba(78, 143, 255, 0.05) 80px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 119px,
-      rgba(78, 143, 255, 0.05) 119px,
-      rgba(78, 143, 255, 0.05) 120px
-    ),
-    linear-gradient(
-      90deg,
-      transparent calc(50% - 0.5px),
-      rgba(78, 143, 255, 0.09) calc(50% - 0.5px),
-      rgba(78, 143, 255, 0.09) calc(50% + 0.5px),
-      transparent calc(50% + 0.5px)
-    );
-  overflow-y: auto;
+  padding: 2rem;
+  background: #001f5c;
 }
 
-.main::-webkit-scrollbar {
-  width: 6px;
+.top-header {
+  margin-bottom: 2rem;
 }
 
-.main::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.main::-webkit-scrollbar-thumb {
-  background: var(--border-light);
-  border-radius: 3px;
-}
-
-/* =========================
-   HERO
-========================= */
-.hero {
-  position: relative;
-  width: 100%;
-  height: 155px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #040c18 0%, #071d3d 55%, #040c18 100%);
-  border-bottom: 1px solid var(--border);
-}
-
-#heroCanvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 0 40px 22px;
-}
-
-.hero-content h1 {
-  font-size: 30px;
+.top-header h1 {
+  font-size: 3rem;
   font-weight: 700;
-  color: var(--text-primary);
-  line-height: 1.1;
+  margin-bottom: 0.4rem;
 }
 
-.hero-content p {
-  font-size: 12.5px;
-  color: var(--text-muted);
-  margin-top: 4px;
+.top-header p {
+  color: #b3c7ef;
+  font-size: 1rem;
 }
 
-.header-badge {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px;
-  color: var(--text-muted);
-  background: rgba(13, 33, 69, 0.85);
-  border: 1px solid var(--border);
-  padding: 6px 12px;
-  border-radius: 20px;
-  backdrop-filter: blur(8px);
-}
-
-.badge-dot {
-  width: 7px;
-  height: 7px;
-  background: #38c4b0;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-/* =========================
-   CONTENT
-========================= */
-.content {
-  padding: 20px 40px 40px;
-}
-
-/* =========================
-   STATS GRID
-========================= */
+/* ===== STATS ===== */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .stat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 20px;
-  transition: border-color 0.2s, background 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  opacity: 0.8;
-}
-
-.stat-card.c-athletes::before {
-  background: linear-gradient(90deg, var(--icon-athletes), transparent);
-}
-
-.stat-card.c-coaches::before {
-  background: linear-gradient(90deg, var(--icon-coaches), transparent);
-}
-
-.stat-card.c-tests::before {
-  background: linear-gradient(90deg, var(--icon-tests), transparent);
-}
-
-.stat-card.c-results::before {
-  background: linear-gradient(90deg, var(--icon-results), transparent);
-}
-
-.stat-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-light);
-}
-
-.stat-top {
+  background: #4e5c78;
+  border: 1px solid #6da8ff;
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  min-height: 130px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 14px;
 }
 
-.stat-label {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #d7deea;
+  font-size: 0.95rem;
 }
 
 .stat-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 1.2rem;
+  opacity: 0.85;
 }
 
-.stat-icon svg {
-  width: 16px;
-  height: 16px;
-}
-
-.stat-icon.athletes {
-  background: rgba(78, 143, 255, 0.12);
-  color: var(--icon-athletes);
-}
-
-.stat-icon.coaches {
-  background: rgba(56, 196, 176, 0.12);
-  color: var(--icon-coaches);
-}
-
-.stat-icon.tests {
-  background: rgba(167, 139, 250, 0.12);
-  color: var(--icon-tests);
-}
-
-.stat-icon.results {
-  background: rgba(245, 158, 66, 0.12);
-  color: var(--icon-results);
-}
-
-.stat-value {
-  font-size: 42px;
+.stat-card h2 {
+  font-size: 3rem;
   font-weight: 700;
-  line-height: 1;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+  color: #ffffff;
 }
 
-.stat-trend {
-  font-size: 11.5px;
-  color: var(--text-subtle);
-}
-
-/* =========================
-   LOWER GRID
-========================= */
-.lower-grid {
+/* ===== BOTTOM PANELS ===== */
+.bottom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 1rem;
 }
 
-/* =========================
-   PANELS
-========================= */
-.panel {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 24px;
+.panel-card {
+  background: #4e5c78;
+  border: 1px solid #6da8ff;
+  border-radius: 12px;
+  padding: 1.2rem;
+  min-height: 220px;
 }
 
-.panel-header {
-  margin-bottom: 20px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--border);
-}
-
-.panel-header h3 {
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--text-primary);
+.panel-card h3 {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #ffffff;
 }
 
 .quick-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.9rem;
 }
 
-.action-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 11px 14px;
-  background: var(--accent-dim);
-  border: 1px solid transparent;
+.quick-btn {
+  display: block;
+  text-decoration: none;
+  background: #8c96a8;
+  color: #ffffff;
+  padding: 0.9rem 1rem;
   border-radius: 6px;
-  color: var(--text-primary);
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.15s, border-color 0.15s;
+  transition: 0.25s ease;
 }
 
-.action-btn svg {
-  width: 16px;
-  height: 16px;
-  color: var(--accent);
-  flex-shrink: 0;
+.quick-btn:hover {
+  background: #a0aabc;
 }
 
-.action-btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-}
-
-.action-btn:hover svg {
-  color: white;
-}
-
-.empty-state {
+.recent-activity {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 30px 0;
-  color: var(--text-subtle);
+  min-height: 140px;
   text-align: center;
+  color: #f0f4fb;
+  font-size: 1.2rem;
+  padding: 1rem;
 }
 
-.empty-icon {
-  width: 40px;
-  height: 40px;
-  color: var(--text-subtle);
-}
-
-.empty-state p {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 1100px) {
+/* ===== RESPONSIVO ===== */
+@media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 900px) {
-  .lower-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    width: 200px;
-    min-width: 200px;
-  }
-}
-
-@media (max-width: 700px) {
-  body {
-    overflow: auto;
-  }
-
-  .layout {
+  .dashboard-layout {
     flex-direction: column;
-    height: auto;
   }
 
   .sidebar {
     width: 100%;
-    min-width: unset;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 14px 16px;
-    gap: 10px;
+    border-right: none;
+    border-bottom: 1px solid rgba(80, 140, 255, 0.35);
   }
 
-  .sidebar-top {
-    padding: 0;
-    border: none;
-    margin: 0;
-  }
-
-  .sidebar-nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 0;
-    gap: 4px;
-  }
-
-  .nav-divider {
-    display: none;
-  }
-
-  .logout-btn {
-    margin: 0;
-  }
-
-  .hero-content {
-    padding: 0 20px 18px;
-  }
-
-  .content {
-    padding: 18px 16px;
-  }
-
-  .main {
-    overflow-y: visible;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .bottom-grid {
+    grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 700px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .top-header h1 {
+    font-size: 2.2rem;
+  }
+
+  .panel-card h3 {
+    font-size: 1.5rem;
+  }
+}
+  

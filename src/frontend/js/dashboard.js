@@ -2,26 +2,14 @@ const token = localStorage.getItem("token");
 
 if (!token) {
   window.location.href = "./login.html";
-} else {
-  initDashboard();
 }
 
-function initDashboard() {
-  setupLogout();
-  loadDashboardStats();
-  initHeroAnimation();
-}
+const logoutBtn = document.getElementById("logoutBtn");
 
-function setupLogout() {
-  const logoutBtn = document.getElementById("logoutBtn");
-
-  if (!logoutBtn) return;
-
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("token");
-    window.location.href = "./login.html";
-  });
-}
+logoutBtn?.addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location.href = "./login.html";
+});
 
 function loadDashboardStats() {
   // Mock inicial para o dashboard ficar “vivo”
