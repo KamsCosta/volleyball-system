@@ -1,116 +1,91 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using VolleyballSystem.API.Data;
-using VolleyballSystem.API.Models;
-using VolleyballSystem.API.DTOs;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using VolleyballSystem.API.DTO;
+using VolleyballSystem.API.Services;
 
 namespace VolleyballSystem.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize] // todas as rotas exigem token JWT
     public class PlayersController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly PlayerService _playerService;
 
-        public PlayersController(ApplicationDbContext context)
+        public PlayersController(PlayerService playerService)
         {
-            _context = context;
+            _playerService = playerService;
         }
 
-        // GET: api/players
+        // GET api/players
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
+        public async Task<IActionResult> GetAll()
         {
-            var players = await _context.Players
-                .OrderBy(p => p.Number)
-                .ToListAsync();
-
+            var players = await _playerService.GetAllAsync();
             return Ok(players);
         }
 
-        // GET: api/players/5
+        // GET api/players/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Player>> GetPlayer(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var player = await _context.Players.FindAsync(id);
-
+            var player = await _playerService.GetByIdAsync(id);
             if (player == null)
-                return NotFound(new { message = "Jogador não encontrado." });
+                return NotFound(new { message = "Atleta não encontrado." });
 
             return Ok(player);
         }
 
-        // POST: api/players
+        // POST api/players
         [HttpPost]
-        public async Task<ActionResult<Player>> CreatePlayer([FromBody] CreatePlayerDto dto)
+        public async Task<IActionResult> Create([FromBody] PlayerRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var numberExists = await _context.Players.AnyAsync(p => p.Number == dto.Number);
-            if (numberExists)
-                return BadRequest(new { message = "Já existe um jogador com esse número." });
-
-            var player = new Player
+            try
             {
-                Name = dto.Name,
-                Position = dto.Position,
-                Number = dto.Number,
-                Height = dto.Height
-            };
-
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPlayer), new { id = player.Id }, player);
+                var player = await _playerService.CreateAsync(request);
+                return StatusCode(201, player);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // PUT: api/players/5
+        // PUT api/players/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdatePlayer(int id, [FromBody] UpdatePlayerDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] PlayerRequest request)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var player = await _context.Players.FindAsync(id);
+            try
+            {
+                var player = await _playerService.UpdateAsync(id, request);
+                if (player == null)
+                    return NotFound(new { message = "Atleta não encontrado." });
 
-            if (player == null)
-                return NotFound(new { message = "Jogador não encontrado." });
-
-            var numberExists = await _context.Players
-                .AnyAsync(p => p.Number == dto.Number && p.Id != id);
-
-            if (numberExists)
-                return BadRequest(new { message = "Outro jogador já usa esse número." });
-
-            player.Name = dto.Name;
-            player.Position = dto.Position;
-            player.Number = dto.Number;
-            player.Height = dto.Height;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Jogador atualizado com sucesso." });
+                return Ok(player);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // DELETE: api/players/5
+        // DELETE api/players/{id}
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePlayer(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var player = await _context.Players.FindAsync(id);
+            var deleted = await _playerService.DeleteAsync(id);
+            if (!deleted)
+                return NotFound(new { message = "Atleta não encontrado." });
 
-            if (player == null)
-                return NotFound(new { message = "Jogador não encontrado." });
-
-            _context.Players.Remove(player);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Jogador removido com sucesso." });
+            return Ok(new { message = "Atleta removido com sucesso." });
         }
     }
 }

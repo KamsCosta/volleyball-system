@@ -14,6 +14,7 @@ builder.Services.AddControllers();
 
 // Services
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<PlayerService>(); // 👈 adicionado
 
 // Banco de dados (InMemory por enquanto)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
