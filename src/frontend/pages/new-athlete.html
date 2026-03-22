@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Athletes – Volleyball Performance</title>
+  <title>New Athlete – Volleyball Performance</title>
   <link rel="stylesheet" href="../css/players.css"/>
 </head>
 <body>
@@ -26,7 +26,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
       </a>
-      <a href="./players.html" class="nav-item active">
+      <a href="./players.html" class="nav-item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/><path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/><path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/></svg>
         Athletes
       </a>
@@ -34,7 +34,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12H15M9 16H13"/></svg>
         Test List
       </a>
-      <a href="./new-athlete.html" class="nav-item">
+      <a href="./new-athlete.html" class="nav-item active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/><path d="M19 3V7M17 5H21"/></svg>
         New Athlete
       </a>
@@ -58,86 +58,50 @@
   <main class="main">
     <div class="page-header">
       <div>
-        <h1>Athletes</h1>
-        <p>Manage and view all registered athletes</p>
+        <h1>New Athlete</h1>
+        <p>Register a new athlete in the system</p>
       </div>
-      <div class="header-actions">
-        <button id="refreshBtn" class="refresh-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          Refresh
-        </button>
-        <a href="./new-athlete.html" class="new-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-          New Athlete
-        </a>
-      </div>
+      <a href="./players.html" class="refresh-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back to Athletes
+      </a>
     </div>
 
     <div id="messageBox"></div>
 
     <section class="panel">
       <div class="panel-header">
-        <h3>Athletes List</h3>
-        <span class="panel-badge" id="totalBadge">0 Athletes</span>
+        <h3>Athlete Information</h3>
+        <span class="panel-badge">New</span>
       </div>
-      <div class="table-wrap">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Number</th>
-              <th>Height</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="playersTableBody">
-            <tr><td colspan="6" class="empty-row">Loading athletes...</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <form id="newAthleteForm">
+        <div class="form-grid">
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Athlete full name" required/>
+          </div>
+          <div class="field">
+            <label for="position">Position</label>
+            <input type="text" id="position" placeholder="Ex: Setter, Libero, Opposite" required/>
+          </div>
+          <div class="field">
+            <label for="number">Number</label>
+            <input type="number" id="number" min="1" max="99" placeholder="Jersey number (1–99)" required/>
+          </div>
+          <div class="field">
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" min="100" max="250" placeholder="Height in cm" required/>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" id="submitBtn" class="btn-primary">➕ Save Athlete</button>
+          <a href="./players.html" class="btn-secondary">Cancel</a>
+        </div>
+      </form>
     </section>
   </main>
 </div>
 
-<!-- EDIT MODAL -->
-<div id="editModal" class="modal-overlay hidden">
-  <div class="modal">
-    <div class="modal-header">
-      <h3>Edit Athlete</h3>
-      <button id="closeModal" class="modal-close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <form id="editForm">
-      <input type="hidden" id="editId"/>
-      <div class="form-grid">
-        <div class="field">
-          <label for="editName">Name</label>
-          <input type="text" id="editName" required/>
-        </div>
-        <div class="field">
-          <label for="editPosition">Position</label>
-          <input type="text" id="editPosition" required/>
-        </div>
-        <div class="field">
-          <label for="editNumber">Number</label>
-          <input type="number" id="editNumber" min="1" max="99" required/>
-        </div>
-        <div class="field">
-          <label for="editHeight">Height (cm)</label>
-          <input type="number" id="editHeight" min="100" max="250" required/>
-        </div>
-      </div>
-      <div class="modal-actions">
-        <button type="submit" id="saveEditBtn" class="btn-primary">💾 Save Changes</button>
-        <button type="button" id="cancelModal" class="btn-secondary">Cancel</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script type="module" src="../js/players.js"></script>
+<script type="module" src="../js/new-athlete.js"></script>
 </body>
 </html>
