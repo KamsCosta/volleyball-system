@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using VolleyballSystem.API.Data;
 using VolleyballSystem.API.Services;
@@ -14,11 +15,12 @@ builder.Services.AddControllers();
 
 // Services
 builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<PlayerService>(); // 👈 adicionado
+builder.Services.AddScoped<PlayerService>();
+builder.Services.AddScoped<EmailService>();
 
-// Banco de dados (InMemory por enquanto)
+// Banco de dados — SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase("VolleyballDB"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // CORS
 builder.Services.AddCors(options =>
@@ -31,6 +33,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+// JWT
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,7 +47,6 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
@@ -56,10 +58,8 @@ var app = builder.Build();
 
 // Middlewares
 app.UseCors("CorsPolicy");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
