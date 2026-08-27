@@ -12,8 +12,9 @@ namespace VolleyballSystem.API.Models
 
         public string Email { get; set; } = string.Empty;
 
-        // O hash da senha criptografada
         public string PasswordHash { get; set; } = string.Empty;
+
+        public bool IsActive { get; set; } = true;
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

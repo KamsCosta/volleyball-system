@@ -1,0 +1,309 @@
+/* =========================
+   TIFFANY.CSS
+   Página de homenagem — Tifanny Abreu
+   Requer: global.css
+
+   PALETA PRÓPRIA (não usada no resto do app):
+   --tf-green   #0C6B3D  verde bandeira, mais fechado
+   --tf-gold    #f5c242  ouro, mais claro
+   --tf-blue    #5BCEFA  azul bandeira trans
+   --tf-pink    #F5A9B8  rosa bandeira trans
+   --tf-cream   #FBF8F2  fundo claro tipo areia de quadra
+   --tf-ink     #16241E  texto escuro sobre fundo claro
+========================= */
+
+.tf-page {
+  --tf-green: #0C6B3D;
+  --tf-green-deep: #084C2A;
+  --tf-gold: #f5c242;
+  --tf-blue: #5BCEFA;
+  --tf-pink: #F5A9B8;
+  --tf-cream: #FBF8F2;
+  --tf-ink: #16241E;
+  --tf-ink-soft: #3d4f47;
+  font-family: Arial, sans-serif;
+
+  /* Fundo com listras sutis da bandeira trans atrás de todo o conteúdo,
+     por cima da cor escura de base — discreto o bastante pra não
+     atrapalhar a leitura, mas visível como uma dedicatória constante. */
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(91,206,250,0.07)  0%,   rgba(91,206,250,0.07)  20%,
+      rgba(245,169,184,0.07) 20%,  rgba(245,169,184,0.07) 40%,
+      rgba(255,255,255,0.05) 40%,  rgba(255,255,255,0.05) 60%,
+      rgba(245,169,184,0.07) 60%,  rgba(245,169,184,0.07) 80%,
+      rgba(91,206,250,0.07)  80%,  rgba(91,206,250,0.07)  100%
+    ),
+    var(--bg-main);
+  background-attachment: fixed;
+}
+
+/* ── HERO ────────────────────────────────────── */
+.tf-hero {
+  position: relative;
+  background: linear-gradient(160deg, #050d1a 0%, #0d2145 55%, #102654 100%);
+  padding: 56px 40px 48px;
+  overflow: hidden;
+}
+
+/* barra inferior nas cores da bandeira trans, no lugar da borda dourada */
+.tf-hero::after {
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: linear-gradient(90deg, var(--tf-blue), var(--tf-pink) 25%, #ffffff 50%, var(--tf-pink) 75%, var(--tf-blue));
+}
+
+/* linha de quadra sutil no fundo, como uma linha lateral de vôlei */
+.tf-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, transparent, transparent 58px, rgba(255,255,255,0.04) 58px, rgba(255,255,255,0.04) 60px);
+  pointer-events: none;
+}
+
+.tf-hero-ribbon {
+  display: inline-flex;
+  height: 8px;
+  width: 180px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 0 24px rgba(91,206,250,0.35), 0 0 24px rgba(245,169,184,0.25);
+}
+.tf-hero-ribbon span { flex: 1; }
+.tf-hero-ribbon .b { background: var(--tf-blue); }
+.tf-hero-ribbon .p { background: var(--tf-pink); }
+.tf-hero-ribbon .w { background: #ffffff; }
+
+.tf-hero-eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.75);
+  margin-bottom: 10px;
+}
+
+.tf-hero h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 46px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.05;
+  max-width: 720px;
+  position: relative;
+}
+
+.tf-hero-sub {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 18px;
+  color: rgba(255,255,255,0.88);
+  margin-top: 14px;
+  max-width: 640px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.tf-facts {
+  position: relative;
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: 28px;
+}
+.tf-fact {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 12.5px;
+  color: #ffffff;
+  display: flex; align-items: center; gap: 6px;
+}
+.tf-fact strong { color: var(--tf-gold); font-weight: 700; }
+
+/* ── CONTEÚDO ────────────────────────────────── */
+.tf-content { padding: 40px; max-width: 920px; margin: 0 auto; }
+
+.tf-section { margin-bottom: 44px; }
+
+.tf-section-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--tf-gold);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.tf-section-label::before {
+  content: ''; width: 18px; height: 2px; background: var(--tf-gold);
+}
+
+.tf-section h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 27px; color: var(--text-primary);
+  margin-bottom: 18px; line-height: 1.25;
+}
+
+.tf-prose { display: flex; flex-direction: column; gap: 14px; }
+.tf-prose p {
+  font-size: 15px; line-height: 1.75; color: var(--text-muted);
+}
+.tf-prose strong { color: var(--text-primary); }
+
+/* ── TIMELINE — trilha lateral de quadra ─────── */
+.tf-timeline {
+  position: relative;
+  padding-left: 28px;
+  margin-top: 8px;
+}
+.tf-timeline::before {
+  content: '';
+  position: absolute; left: 5px; top: 6px; bottom: 6px;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom, var(--tf-gold) 0, var(--tf-gold) 6px, transparent 6px, transparent 12px
+  );
+}
+
+.tf-milestone { position: relative; padding-bottom: 26px; }
+.tf-milestone:last-child { padding-bottom: 0; }
+
+.tf-milestone::before {
+  content: '';
+  position: absolute; left: -28px; top: 3px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--tf-green);
+  border: 2px solid var(--tf-gold);
+}
+
+.tf-milestone-year {
+  font-family: Georgia, serif;
+  font-weight: 700; font-size: 15px;
+  color: var(--tf-gold);
+  margin-bottom: 4px;
+}
+.tf-milestone p {
+  font-size: 14px; line-height: 1.65; color: var(--text-muted);
+}
+
+/* ── AVISO SENSÍVEL ──────────────────────────── */
+.tf-context-box {
+  background: rgba(232,185,35,0.08);
+  border: 1px solid rgba(232,185,35,0.3);
+  border-left: 3px solid var(--tf-gold);
+  border-radius: 6px;
+  padding: 16px 20px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+.tf-context-box strong { color: var(--text-primary); }
+
+/* ── RECURSOS DE APOIO ───────────────────────── */
+.tf-resources { display: flex; flex-direction: column; gap: 12px; }
+.tf-resource {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 16px 18px;
+}
+.tf-resource-icon {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--tf-blue), var(--tf-pink));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.tf-resource-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+.tf-resource-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+/* ── MURAL DE APOIO ──────────────────────────── */
+.tf-wall-intro {
+  font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;
+}
+
+.tf-form {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px; margin-bottom: 26px;
+}
+.tf-form-row { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.tf-form label {
+  font-size: 11.5px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; display: block;
+}
+.tf-form input, .tf-form textarea {
+  width: 100%; padding: 10px 14px; background: var(--bg-main);
+  border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text-primary); font-size: 13.5px; font-family: Arial, sans-serif;
+  outline: none; transition: border-color 0.15s; resize: vertical;
+}
+.tf-form input:focus, .tf-form textarea:focus { border-color: var(--tf-blue); }
+.tf-form textarea { min-height: 80px; }
+.tf-char-count { font-size: 11px; color: var(--text-subtle); text-align: right; margin-top: 4px; }
+
+.tf-submit-btn {
+  margin-top: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; border: none; border-radius: 6px;
+  background: linear-gradient(90deg, var(--tf-blue), var(--tf-pink));
+  color: #16241E; font-weight: 700; font-size: 13.5px; cursor: pointer;
+  transition: opacity 0.15s;
+}
+.tf-submit-btn:hover { opacity: 0.85; }
+.tf-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.tf-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.tf-wall-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--tf-pink);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.tf-wall-card:nth-child(3n+2) { border-top-color: var(--tf-blue); }
+.tf-wall-card:nth-child(3n)   { border-top-color: var(--tf-gold); }
+
+.tf-wall-msg { font-size: 13.5px; color: var(--text-primary); line-height: 1.55; }
+.tf-wall-meta { display: flex; align-items: center; justify-content: space-between; margin-top: auto; }
+.tf-wall-author { font-size: 12px; font-weight: 700; color: var(--tf-gold); }
+.tf-wall-date { font-size: 11px; color: var(--text-subtle); }
+
+.tf-wall-empty, .tf-wall-loading {
+  grid-column: 1 / -1;
+  text-align: center; padding: 32px; color: var(--text-muted); font-size: 13px;
+}
+
+/* ── DEDICATÓRIA FINAL ───────────────────────── */
+.tf-dedication {
+  text-align: center;
+  padding: 40px 30px;
+  background: linear-gradient(135deg, rgba(91,206,250,0.08), rgba(245,169,184,0.08));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.tf-dedication-flag {
+  display: flex; justify-content: center; gap: 6px; margin-bottom: 18px;
+}
+.tf-dedication-flag span { width: 28px; height: 6px; border-radius: 3px; }
+.tf-dedication-flag .b { background: var(--tf-blue); }
+.tf-dedication-flag .p { background: var(--tf-pink); }
+.tf-dedication-flag .w { background: #ffffff; }
+.tf-dedication p {
+  font-family: Georgia, serif; font-style: italic;
+  font-size: 17px; line-height: 1.7; color: var(--text-primary);
+  max-width: 560px; margin: 0 auto;
+}
+.tf-dedication-sign {
+  margin-top: 16px; font-size: 12px; color: var(--text-muted);
+  font-family: Arial, sans-serif; font-style: normal;
+}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 700px) {
+  .tf-hero { padding: 40px 20px 32px; }
+  .tf-hero h1 { font-size: 32px; }
+  .tf-hero-sub { font-size: 15px; }
+  .tf-content { padding: 24px 18px; }
+  .tf-section h2 { font-size: 22px; }
+}

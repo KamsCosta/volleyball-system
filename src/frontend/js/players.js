@@ -10,10 +10,10 @@ document.getElementById("logoutBtn")?.addEventListener("click", () => {
 
 document.getElementById("refreshBtn")?.addEventListener("click", loadPlayers);
 
-// Modal
-const modal      = document.getElementById("editModal");
-const editForm   = document.getElementById("editForm");
-const closeModal = document.getElementById("closeModal");
+// Modal de edição
+const modal       = document.getElementById("editModal");
+const editForm    = document.getElementById("editForm");
+const closeModal  = document.getElementById("closeModal");
 const cancelModal = document.getElementById("cancelModal");
 
 closeModal?.addEventListener("click", hideModal);
@@ -22,7 +22,7 @@ modal?.addEventListener("click", (e) => { if (e.target === modal) hideModal(); }
 
 editForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const id = document.getElementById("editId").value;
+    const id   = document.getElementById("editId").value;
     const data = {
         Name:     document.getElementById("editName").value.trim(),
         Position: document.getElementById("editPosition").value.trim(),
@@ -49,7 +49,7 @@ editForm?.addEventListener("submit", async (e) => {
 
 async function loadPlayers() {
     const tbody = document.getElementById("playersTableBody");
-    tbody.innerHTML = `<tr><td colspan="6" class="empty-row">Loading athletes...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="empty-row">Loading athletes...</td></tr>`;
 
     try {
         const players = await apiRequest("/players", { method: "GET" });
@@ -57,7 +57,7 @@ async function loadPlayers() {
             `${players.length} Athlete${players.length !== 1 ? "s" : ""}`;
         renderTable(players);
     } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="6" class="empty-row">Failed to load athletes.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-row">Failed to load athletes.</td></tr>`;
         showMessage(err.message || "Error loading athletes.", "error");
     }
 }
@@ -66,7 +66,7 @@ function renderTable(players) {
     const tbody = document.getElementById("playersTableBody");
 
     if (!players || players.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="empty-row">No athletes found. <a href="./new-athlete.html" style="color:#4e8fff">Add one →</a></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-row">No athletes found. <a href="./new-athlete.html" style="color:#4e8fff">Add one →</a></td></tr>`;
         return;
     }
 
@@ -78,13 +78,14 @@ function renderTable(players) {
             <td>#${p.number}</td>
             <td>${p.height} cm</td>
             <td class="actions-cell">
-                <button class="btn-edit" data-id="${p.id}">✏️ Edit</button>
+                <a href="./athlete-detail.html?id=${p.id}" class="btn-edit">📊 Detail</a>
+                <button class="btn-edit" data-id="${p.id}" data-action="edit">✏️ Edit</button>
                 <button class="btn-delete" data-id="${p.id}">🗑️ Delete</button>
             </td>
         </tr>
     `).join("");
 
-    document.querySelectorAll(".btn-edit").forEach(btn => {
+    document.querySelectorAll("[data-action='edit']").forEach(btn => {
         btn.addEventListener("click", () => {
             const p = players.find(x => x.id === Number(btn.dataset.id));
             if (p) openModal(p);

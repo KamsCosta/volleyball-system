@@ -1,0 +1,92 @@
+/* =========================
+   PROFILE.CSS
+   Específico para: profile.html, settings.html
+   Requer: global.css
+========================= */
+
+/* ── MAIN ────────────────────────────────────── */
+.main { padding: 36px 40px; }
+
+/* ── PAGE HEADER ─────────────────────────────── */
+.page-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 28px; gap: 16px;
+}
+.page-header h1 { font-size:30px; font-weight:700; color:var(--text-primary); line-height:1.1; }
+.page-header p  { font-size:13px; color:var(--text-muted); margin-top:4px; }
+
+/* ── FORM ────────────────────────────────────── */
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-size:12px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; }
+
+.field input {
+  padding: 10px 14px; background: var(--bg-main);
+  border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text-primary); font-size: 13px; outline: none;
+  transition: border-color 0.15s;
+}
+.field input::placeholder { color:var(--text-subtle); }
+.field input:focus { border-color:var(--accent); }
+
+/* ── PROFILE HEADER ──────────────────────────── */
+.profile-header-card {
+  display: flex; align-items: center; gap: 20px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 24px; margin-bottom: 20px;
+}
+
+.profile-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--accent-dim); display: flex; align-items: center;
+  justify-content: center; font-size: 24px; font-weight: 700;
+  color: var(--accent); flex-shrink: 0;
+}
+
+.profile-name  { font-size:20px; font-weight:700; color:var(--text-primary); margin-bottom:4px; }
+.profile-email { font-size:13px; color:var(--text-muted); margin-bottom:4px; }
+.profile-meta  { font-size:12px; color:var(--text-subtle); }
+
+/* ── SETTINGS OPTIONS ────────────────────────── */
+.settings-options { display:flex; flex-direction:column; gap:10px; }
+
+.settings-option {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 18px; background: var(--bg-main);
+  border: 1px solid var(--border); border-radius: 8px;
+  cursor: pointer; text-align: left; width: 100%;
+  transition: border-color 0.15s, background 0.15s;
+}
+.settings-option:hover    { border-color:var(--accent); background:var(--bg-card-hover); }
+.settings-option.active   { border-color:var(--accent); background:var(--accent-dim); }
+.settings-option.disabled { opacity:0.45; cursor:not-allowed; }
+
+.settings-option-flag  { font-size:24px; flex-shrink:0; }
+.settings-option-title { font-size:14px; font-weight:600; color:var(--text-primary); }
+.settings-option-desc  { font-size:12px; color:var(--text-muted); margin-top:2px; }
+
+.settings-option-check {
+  margin-left: auto; font-size: 16px; font-weight: 700;
+  color: var(--accent); flex-shrink: 0;
+}
+.settings-option-check.hidden { display:none; }
+
+/* ── SETTINGS INFO ───────────────────────────── */
+.settings-info-grid { display:flex; flex-direction:column; }
+
+.settings-info-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.settings-info-row:last-child { border-bottom:none; }
+
+.settings-info-label { font-size:13px; color:var(--text-muted); font-weight:500; }
+.settings-info-value { font-size:13px; color:var(--text-primary); font-weight:500; }
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width:900px) { .form-grid { grid-template-columns:1fr; } }
+@media (max-width:700px) {
+  .main { padding:20px 16px; }
+  .page-header { flex-direction:column; }
+  .profile-header-card { flex-direction:column; text-align:center; }
+}

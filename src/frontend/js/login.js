@@ -32,7 +32,7 @@ form.addEventListener("submit", async (e) => {
     showMessage("Login successful! Redirecting...", "success");
 
     setTimeout(() => {
-      window.location.href = "./dashboard.html";
+      window.location.href = "./home.html"; // ← redireciona para o home
     }, 1200);
   } catch (error) {
     showMessage(error.message || "Error connecting to the server.", "error");
@@ -48,12 +48,10 @@ function setLoading(loading, text) {
 
 function showMessage(message, type) {
   removeMessage();
-
   const div = document.createElement("div");
   div.id = "formMsg";
   div.className = `form-message ${type}`;
   div.textContent = message;
-
   form.insertBefore(div, form.firstChild);
 }
 

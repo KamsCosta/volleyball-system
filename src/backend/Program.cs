@@ -17,6 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<PlayerService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<TestService>();
 
 // Banco de dados — SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -41,6 +42,11 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    // IMPORTANTE: sem isso, o ASP.NET Core remapeia "sub" para uma URL longa
+    // internamente, e User.FindFirst("sub") no controller sempre retorna null,
+    // fazendo GetMe/UpdateProfile/UpdatePassword devolverem 401 mesmo com token válido.
+    options.MapInboundClaims = false;
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -56,10 +62,8 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Middlewares
 app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();

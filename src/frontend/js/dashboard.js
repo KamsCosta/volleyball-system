@@ -1,6 +1,5 @@
 import { apiRequest } from "./auth.js";
 
-// Proteção de rota
 const token = localStorage.getItem("token");
 if (!token) {
     window.location.href = "./login.html";
@@ -23,18 +22,33 @@ async function init() {
 ========================= */
 async function loadDashboardStats() {
     try {
-        const players = await apiRequest("/players", { method: "GET" });
+        // Busca players, users e testes em paralelo
+        const [players, users, testStats] = await Promise.all([
+            apiRequest("/players", { method: "GET" }),
+            apiRequest("/auth/users", { method: "GET" }).catch(() => null),
+            apiRequest("/tests/stats", { method: "GET" })
+        ]);
+
+        // Total Athletes
         updateStat("totalAthletes", players.length);
 
-        // Futuramente: outros endpoints para coaches, tests e results
-        updateStat("totalCoaches", 0);
-        updateStat("tests", 0);
-        updateStat("results", 0);
+        // Total Coaches — total de usuários cadastrados
+        if (users && Array.isArray(users)) {
+            updateStat("totalCoaches", users.length);
+        } else {
+            updateStat("totalCoaches", "–");
+        }
+
+        // Available Tests — testes únicos (por tipo/categoria)
+        updateStat("tests", testStats.total ?? 0);
+
+        // Test Results — total de skill results (16 por teste)
+        updateStat("results", (testStats.total ?? 0) * 16);
 
     } catch (err) {
         console.error("Erro ao carregar stats:", err);
         updateStat("totalAthletes", 0);
-        updateStat("totalCoaches", 0);
+        updateStat("totalCoaches", "–");
         updateStat("tests", 0);
         updateStat("results", 0);
     }
