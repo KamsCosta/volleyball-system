@@ -14,6 +14,16 @@ using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Segredos (Jwt:Secret, Email:Password) ficam no "dotnet user-secrets", fora do repositório.
+// Carregado sempre, e não só em Development: sem launchSettings válido o app roda como Production.
+// Como configurar numa máquina nova: docs/SEGREDOS.md
+builder.Configuration.AddUserSecrets<Program>(optional: true);
+if (string.IsNullOrWhiteSpace(builder.Configuration["Jwt:Secret"]))
+{
+    throw new InvalidOperationException(
+        "Jwt:Secret não configurado. Rode em src/backend: dotnet user-secrets set \"Jwt:Secret\" \"<chave longa>\" (ver docs/SEGREDOS.md).");
+}
+
 // Controllers
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();

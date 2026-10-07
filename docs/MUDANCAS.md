@@ -162,6 +162,22 @@ Pedido: tudo em inglês na tela (o navegador traduz a página quando necessário
   de novo (os rótulos ficam gravados em `AnalysisDetailsJson`).
 - Documentação (`docs/`, READMEs) continua em português.
 
+### 11. Segredos fora do repositório
+
+O repositório é público e o `appsettings.json` tinha a senha de app do Gmail e a chave
+do JWT desde commits antigos. Passo a passo e configuração em `docs/SEGREDOS.md`.
+
+- `Jwt:Secret` e `Email:Password` movidos para o `dotnet user-secrets` (`UserSecretsId`
+  no `.csproj`); no `appsettings.json` ficam vazios.
+- Chave do JWT **trocada** por uma nova aleatória (a antiga está no histórico público).
+  Quem estava logado precisa entrar de novo.
+- `Program.cs`: carrega o user-secrets sempre e para com mensagem clara se `Jwt:Secret`
+  estiver faltando.
+- Pendente (só a Kamila pode fazer): revogar a senha de app do Gmail antiga e cadastrar a
+  nova com `dotnet user-secrets set "Email:Password" "..."`.
+- Verificado: backend de teste sobe lendo os segredos, API protegida responde 401 e o
+  login responde normalmente.
+
 ### Como foi verificado
 
 - `dotnet build` sem erros nem avisos (compilado em pasta separada, porque a API estava
