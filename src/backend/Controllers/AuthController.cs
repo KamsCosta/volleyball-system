@@ -202,7 +202,7 @@ namespace VolleyballSystem.API.Controllers
         [Authorize]
         [HttpGet("test")]
         public IActionResult TestToken() => Ok(new {
-            message = "Token válido! 🎉",
+            message = "Valid token! 🎉",
             user = new { Id = User.FindFirst("sub")?.Value, Email = User.FindFirst("email")?.Value, Name = User.FindFirst("name")?.Value }
         });
     }

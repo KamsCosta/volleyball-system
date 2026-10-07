@@ -1,4 +1,5 @@
 import { apiRequest } from "./auth.js";
+import { loadSupportedSkills, renderVideoAnalysisBlock, bindVideoAnalysisEvents } from "./video-analysis.js";
 
 const token = localStorage.getItem("token");
 if (!token) { window.location.href = "./login.html"; }
@@ -126,7 +127,7 @@ function renderTable(tests) {
 }
 
 function openModal(test) {
-    document.getElementById("modalTitle").textContent    = `${test.playerName} — TAT`;
+    document.getElementById("modalTitle").textContent    = `${test.playerName} · TAT`;
     document.getElementById("modalSubtitle").textContent =
         `${test.category} · ${formatDate(test.testDate)}${test.coachName ? " · Applied by " + test.coachName : ""}${test.notes ? " · " + test.notes : ""}`;
 
@@ -159,7 +160,9 @@ function openModal(test) {
                 <span class="skill-detail-pct" style="color:${rateColor(s.hitRate)};">${s.hits}/10</span>
             </div>
         </div>
+        ${renderVideoAnalysisBlock(s.id, s.skillIndex, s.skillName)}
     `).join("");
+    bindVideoAnalysisEvents(document.getElementById("modalSkills"));
 
     modal.classList.remove("hidden");
 }
@@ -189,4 +192,5 @@ function showMessage(msg, type) {
     setTimeout(() => { box.innerHTML = ""; }, 4000);
 }
 
+loadSupportedSkills();
 loadTests();

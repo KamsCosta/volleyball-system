@@ -16,6 +16,7 @@ namespace VolleyballSystem.API.Data
         public DbSet<TestSkillResult>    TestSkillResults    { get; set; }
         public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         public DbSet<AuditLog>           AuditLogs           { get; set; }
+        public DbSet<SupportMessage>     SupportMessages     { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

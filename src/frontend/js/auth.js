@@ -61,7 +61,7 @@ export async function login(data) {
 
     if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || "Usuário ou senha inválidos");
+        throw new Error(error.message || "Invalid email or password");
     }
 
     return response.json();

@@ -62,6 +62,7 @@ namespace VolleyballSystem.API.DTO
 
     public class SkillResultResponse
     {
+        public int Id { get; set; }
         public int SkillIndex { get; set; }
         public string SkillName { get; set; } = string.Empty;
         public int Hits { get; set; }

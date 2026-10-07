@@ -5,3 +5,14 @@ obj/
 # vs code / rider
 .vscode/
 .idea/
+
+# vídeos enviados para análise (dados de atletas)
+uploads/
+
+# python (serviço de análise de vídeo)
+.venv/
+__pycache__/
+
+# vídeos de teste/calibração do serviço de análise (dados de atletas)
+src/video-analysis-service/samples/*
+!src/video-analysis-service/samples/README.md

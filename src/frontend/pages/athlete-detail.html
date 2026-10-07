@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- ícone do sistema e instalação no celular (gerados por tools/gerar_icones.py) -->
+  <link rel="icon" href="../assets/icons/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="../assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="apple-mobile-web-app-title" content="Volleyball Performance" />
   <title>Athlete Detail – Volleyball Performance</title>
   <link rel="stylesheet" href="../css/global.css"/>
   <link rel="stylesheet" href="../css/players.css"/>
@@ -11,70 +18,57 @@
 <body>
 <div class="layout">
 
-<aside class="sidebar">
-  <div class="sidebar-top">
-    <div class="brand">
-      <span class="brand-emoji">🏐</span>
-      <span class="brand-name">Volleyball<br><strong>Performance</strong></span>
-    </div>
+<header class="topbar">
+  <a href="./home.html" class="brand" aria-label="Volleyball Performance, Home">
+    <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><defs><clipPath id="vbr0"><path d="M12.00 12.00 A7.43 7.43 0 0 1 12.00 2.00 A10.00 10.00 0 0 1 20.66 17.00 A7.43 7.43 0 0 0 12.00 12.00Z"/></clipPath><clipPath id="vbr1"><path d="M12.00 12.00 A7.43 7.43 0 0 1 20.66 17.00 A10.00 10.00 0 0 1 3.34 17.00 A7.43 7.43 0 0 0 12.00 12.00Z"/></clipPath><clipPath id="vbr2"><path d="M12.00 12.00 A7.43 7.43 0 0 1 3.34 17.00 A10.00 10.00 0 0 1 12.00 2.00 A7.43 7.43 0 0 0 12.00 12.00Z"/></clipPath></defs><g clip-path="url(#vbr0)" stroke-width="0.9"><circle cx="13.58" cy="19.26" r="9.13"/><circle cx="13.58" cy="19.26" r="10.83"/></g><g clip-path="url(#vbr1)" stroke-width="0.9"><circle cx="4.92" cy="9.74" r="9.13"/><circle cx="4.92" cy="9.74" r="10.83"/></g><g clip-path="url(#vbr2)" stroke-width="0.9"><circle cx="17.50" cy="7.00" r="9.13"/><circle cx="17.50" cy="7.00" r="10.83"/></g><path stroke-width="1.3" d="M12.00 12.00 A7.43 7.43 0 0 1 12.00 2.00 M12.00 12.00 A7.43 7.43 0 0 1 20.66 17.00 M12.00 12.00 A7.43 7.43 0 0 1 3.34 17.00"/><circle cx="12" cy="12" r="10" stroke-width="1.5"/></svg>
+    <span class="brand-name">Volleyball <strong>Performance</strong></span>
+  </a>
+
+  <nav class="topbar-nav">
+    <a href="./home.html" class="topbar-link">Home</a>
+    <a href="./dashboard.html" class="topbar-link">Dashboard</a>
+    <a href="./players.html" class="topbar-link">Athletes</a>
+    <a href="./test-list.html" class="topbar-link">Tests</a>
+    <a href="./coaches.html" class="topbar-link">Coaches</a>
+  </nav>
+
+  <div class="topbar-right">
+    <a href="./new-test.html" class="topbar-cta">New Test</a>
+    <button id="menuBtn" class="menu-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
+</header>
 
-  <nav class="sidebar-nav">
+<div id="drawerBackdrop" class="drawer-backdrop"></div>
+<aside class="drawer" aria-label="Menu">
+  <button id="drawerClose" class="drawer-close" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
 
-    <a href="./home.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3L21 9.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V9.5Z"/></svg>
-      Home
-    </a>
+  <nav class="drawer-nav">
+    <span class="drawer-label">Overview</span>
+    <a href="./home.html" class="nav-item">Home</a>
+    <a href="./dashboard.html" class="nav-item">Dashboard</a>
 
-    <a href="./tifanny.html" class="nav-item nav-item-tribute">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-6.7-4.3-9.3-8.1C1 10.5 1.4 7.4 3.6 5.6c2-1.6 4.8-1.3 6.4.4L12 8l2-2c1.6-1.7 4.4-2 6.4-.4 2.2 1.8 2.6 4.9.9 7.3C18.7 16.7 12 21 12 21z"/></svg>
-      Tifanny
-    </a>
+    <span class="drawer-label">Team</span>
+    <a href="./players.html" class="nav-item">Athletes</a>
+    <a href="./new-athlete.html" class="nav-item">New Athlete</a>
+    <a href="./coaches.html" class="nav-item">Coaches</a>
 
-    <a href="./dashboard.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Dashboard
-    </a>
+    <span class="drawer-label">Evaluation</span>
+    <a href="./test-list.html" class="nav-item">Test List</a>
+    <a href="./new-test.html" class="nav-item">New Test</a>
 
-    <a href="./players.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/><path d="M16 3.13C17.76 3.58 19 5.18 19 7.05"/><path d="M21 21V19C21 17.14 19.76 15.54 18 15.09"/></svg>
-      Athletes
-    </a>
-
-    <a href="./new-athlete.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/><path d="M19 3V7M17 5H21"/></svg>
-      New Athlete
-    </a>
-
-    <a href="./test-list.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 5H7C5.9 5 5 5.9 5 7V19C5 20.1 5.9 21 7 21H17C18.1 21 19 20.1 19 19V7C19 5.9 18.1 5 17 5H15"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12H15M9 16H13"/></svg>
-      Test List
-    </a>
-
-    <a href="./coaches.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M3 21V19C3 16.79 4.79 15 7 15H11C13.21 15 15 16.79 15 19V21"/><path d="M16 11C17.66 11 19 9.66 19 8C19 6.34 17.66 5 16 5"/><path d="M21 21V19C21 17.35 19.93 15.96 18.5 15.28"/></svg>
-      Coaches
-    </a>
-
-    <div class="nav-divider"></div>
-
-    <a href="./settings.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Settings
-    </a>
-
-    <a href="./profile.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20C4 17.79 7.58 16 12 16C16.42 16 20 17.79 20 20"/></svg>
-      Profile
-    </a>
-
+    <span class="drawer-label">Account</span>
+    <a href="./tifanny.html" class="nav-item nav-item-tribute">Tifanny</a>
+    <a href="./settings.html" class="nav-item">Settings</a>
+    <a href="./profile.html" class="nav-item">Profile</a>
   </nav>
 
   <button id="logoutBtn" class="logout-btn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17L21 12M21 12L16 7M21 12H9"/><path d="M9 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H9"/></svg>
     Logout
-    </button>
-  </aside>
+  </button>
+</aside>
 
   <!-- MAIN -->
   <main class="main">
@@ -144,9 +138,11 @@
       </div>
     </section>
 
+    <footer class="site-footer"><span>Volleyball Performance</span><span>&copy; 2026</span><span>Tracking every rep</span></footer>
   </main>
 </div>
 
 <script type="module" src="../js/athlete-detail.js"></script>
+<script src="../js/nav.js" defer></script>
 </body>
 </html>

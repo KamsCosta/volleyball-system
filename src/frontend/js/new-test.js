@@ -1,4 +1,9 @@
 import { apiRequest } from "./auth.js";
+import { loadSupportedSkills, isSkillSupported, analyzeVideoInto, renderFilmingGuide } from "./video-analysis.js";
+
+// Vídeos anexados no formulário: SkillIndex -> File.
+// A análise só roda depois de salvar, porque precisa do Id de cada habilidade salva.
+const attachedVideos = new Map();
 
 const token = localStorage.getItem("token");
 if (!token) { window.location.href = "./login.html"; }
@@ -160,17 +165,122 @@ document.getElementById("testForm").addEventListener("submit", async (e) => {
     btn.disabled = true;
     btn.textContent = "Saving...";
 
+    let saved = null;
     try {
-        await apiRequest("/tests", { method: "POST", body: JSON.stringify(payload) });
-        showMessage("Test saved successfully! Redirecting...", "success");
-        setTimeout(() => { window.location.href = "./test-list.html"; }, 1500);
+        saved = await apiRequest("/tests", { method: "POST", body: JSON.stringify(payload) });
     } catch (err) {
         showMessage(err.message || "Error saving test.", "error");
-    } finally {
         btn.disabled = false;
         btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Test`;
+        return;
     }
+
+    if (attachedVideos.size === 0 || !saved) {
+        showMessage("Test saved successfully! Redirecting...", "success");
+        setTimeout(() => { window.location.href = "./test-list.html"; }, 1500);
+        return;
+    }
+
+    // Com vídeos anexados: fica na página e mostra a análise de cada um
+    btn.textContent = "Saved";
+    document.querySelector(".form-actions").classList.add("hidden");
+    showMessage(`Test saved! Analyzing ${attachedVideos.size} video(s). Keep this page open.`, "success");
+    await analyzeAttachedVideos(saved);
 });
+
+// ── Vídeo: anexar no formulário ────────────────────────────────
+
+async function setupVideoAttachments() {
+    await loadSupportedSkills();
+    let any = false;
+
+    document.querySelectorAll(".skill-input").forEach(input => {
+        const idx = parseInt(input.dataset.skill);
+        if (!isSkillSupported(idx)) return;
+        any = true;
+
+        const attach = document.createElement("div");
+        attach.className = "va-attach";
+        attach.innerHTML = `
+            <label class="va-attach-btn">
+                🎥 <span class="va-attach-label">Attach video</span>
+                <input type="file" accept="video/*" hidden />
+            </label>
+            <button type="button" class="va-attach-remove hidden" title="Remove video">✕</button>
+        `;
+        const fileInput = attach.querySelector("input[type=file]");
+        const label = attach.querySelector(".va-attach-label");
+        const removeBtn = attach.querySelector(".va-attach-remove");
+
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+            attachedVideos.set(idx, file);
+            label.textContent = file.name;
+            attach.classList.add("has-file");
+            removeBtn.classList.remove("hidden");
+        });
+        removeBtn.addEventListener("click", () => {
+            attachedVideos.delete(idx);
+            fileInput.value = "";
+            label.textContent = "Attach video";
+            attach.classList.remove("has-file");
+            removeBtn.classList.add("hidden");
+        });
+
+        input.closest(".skill-row").appendChild(attach);
+    });
+
+    if (any) {
+        const info = document.querySelector(".skills-info");
+        info.insertAdjacentHTML("afterend", `
+            <div class="va-attach-info">
+                🎥 Static Manchete and Static Toque accept a video (optional). The analysis runs
+                when you save the test, and you compare the machine result with what you entered.
+                ${renderFilmingGuide()}
+            </div>
+        `);
+    }
+}
+
+// ── Vídeo: analisar depois de salvar ───────────────────────────
+
+async function analyzeAttachedVideos(savedTest) {
+    const panel = document.createElement("section");
+    panel.className = "panel";
+    panel.id = "videoResults";
+    panel.innerHTML = `
+        <div class="panel-header"><h3>Video analysis</h3><span class="panel-badge">AI</span></div>
+        <div class="va-new-test-results"></div>
+        <div class="form-actions">
+            <a href="./test-list.html" class="btn-secondary hidden" id="videoDoneBtn">Go to the test list</a>
+        </div>
+    `;
+    document.getElementById("testForm").after(panel);
+    panel.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    const list = panel.querySelector(".va-new-test-results");
+    const skills = savedTest.skillResults || [];
+
+    // Um vídeo por vez: o serviço de análise processa em sequência
+    for (const [idx, file] of attachedVideos) {
+        const skill = skills.find(s => s.skillIndex === idx);
+        const block = document.createElement("div");
+        block.className = "va-block";
+        block.innerHTML = `<div class="va-new-test-title">${SKILLS[idx]}</div><div class="va-result"></div>`;
+        list.appendChild(block);
+        const box = block.querySelector(".va-result");
+
+        if (!skill) {
+            box.innerHTML = `<div class="va-error">❌ This skill was not found in the saved test.</div>`;
+            continue;
+        }
+        await analyzeVideoInto(box, skill.id, file);
+    }
+
+    panel.querySelector("#videoDoneBtn").classList.remove("hidden");
+    showMessage("Test saved and video analysis finished.", "success");
+}
 
 function showMessage(msg, type) {
     clearMessage();
@@ -189,3 +299,4 @@ function clearMessage() {
 loadAthletes();
 loadCoaches();
 updatePreview();
+setupVideoAttachments();

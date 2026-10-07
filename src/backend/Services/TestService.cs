@@ -164,6 +164,7 @@ namespace VolleyballSystem.API.Services
             SkillResults   = t.SkillResults?
                 .OrderBy(s => s.SkillIndex)
                 .Select(s => new SkillResultResponse {
+                    Id         = s.Id,
                     SkillIndex = s.SkillIndex,
                     SkillName  = s.SkillName,
                     Hits       = s.Hits,

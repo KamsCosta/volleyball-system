@@ -115,6 +115,31 @@ namespace VolleyballSystem.API.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("VolleyballSystem.API.Models.SupportMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorName")
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SupportMessages");
+                });
+
             modelBuilder.Entity("VolleyballSystem.API.Models.Test", b =>
                 {
                     b.Property<int>("Id")
@@ -170,10 +195,29 @@ namespace VolleyballSystem.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AnalysisDetailsJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AnalyzedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("CoachAgreesWithMachine")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CoachComment")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
                     b.Property<int>("Errors")
                         .HasColumnType("int");
 
                     b.Property<int>("Hits")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MachineErrors")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MachineHits")
                         .HasColumnType("int");
 
                     b.Property<int>("SkillIndex")
@@ -185,6 +229,10 @@ namespace VolleyballSystem.API.Migrations
 
                     b.Property<int>("TestId")
                         .HasColumnType("int");
+
+                    b.Property<string>("VideoPath")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
 
                     b.HasKey("Id");
 

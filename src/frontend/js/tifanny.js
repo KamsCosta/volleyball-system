@@ -24,7 +24,7 @@ async function loadWall() {
         const messages = await apiRequest("/supportmessages", { method: "GET" });
         renderWall(messages);
     } catch (err) {
-        grid.innerHTML = `<div class="tf-wall-empty">Não foi possível carregar as mensagens agora.</div>`;
+        grid.innerHTML = `<div class="tf-wall-empty">Could not load the messages right now.</div>`;
     }
 }
 
@@ -32,7 +32,7 @@ function renderWall(messages) {
     const grid = document.getElementById("tfWallGrid");
 
     if (!messages || messages.length === 0) {
-        grid.innerHTML = `<div class="tf-wall-empty">Seja a primeira pessoa a deixar uma mensagem de apoio! 💌</div>`;
+        grid.innerHTML = `<div class="tf-wall-empty">Be the first to leave a message of support! 💌</div>`;
         return;
     }
 
@@ -40,7 +40,7 @@ function renderWall(messages) {
         <div class="tf-wall-card">
             <div class="tf-wall-msg">${escapeHtml(m.message)}</div>
             <div class="tf-wall-meta">
-                <span class="tf-wall-author">${escapeHtml(m.authorName || "Torcedor(a) anônimo(a)")}</span>
+                <span class="tf-wall-author">${escapeHtml(m.authorName || "Anonymous fan")}</span>
                 <span class="tf-wall-date">${formatDate(m.createdAt)}</span>
             </div>
         </div>
@@ -55,13 +55,13 @@ document.getElementById("tfWallForm")?.addEventListener("submit", async (e) => {
     const message = document.getElementById("tfMessage").value.trim();
 
     if (!message) {
-        showMessage("Escreva uma mensagem antes de enviar.", "error");
+        showMessage("Write a message before sending.", "error");
         return;
     }
 
     const btn = document.getElementById("tfSubmitBtn");
     btn.disabled = true;
-    btn.textContent = "Enviando...";
+    btn.textContent = "Sending...";
 
     try {
         await apiRequest("/supportmessages", {
@@ -72,16 +72,16 @@ document.getElementById("tfWallForm")?.addEventListener("submit", async (e) => {
             })
         });
 
-        showMessage("Mensagem enviada! Obrigada por apoiar. 💚", "success");
+        showMessage("Message sent! Thank you for your support. 💚", "success");
         document.getElementById("tfWallForm").reset();
         charCount.textContent = "0";
         await loadWall();
 
     } catch (err) {
-        showMessage(err.message || "Erro ao enviar mensagem.", "error");
+        showMessage(err.message || "Error sending the message.", "error");
     } finally {
         btn.disabled = false;
-        btn.innerHTML = "💌 Enviar mensagem";
+        btn.innerHTML = "💌 Send message";
     }
 });
 
@@ -94,7 +94,7 @@ function escapeHtml(str) {
 
 function formatDate(d) {
     if (!d) return "";
-    return new Date(d).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
+    return new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
 }
 
 function showMessage(msg, type) {
