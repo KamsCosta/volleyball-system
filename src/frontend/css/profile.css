@@ -1,0 +1,86 @@
+/* =========================
+   PROFILE.CSS
+   Específico para: profile.html, settings.html
+   Requer: global.css
+========================= */
+
+.page-header { --header-image: url("../assets/images/gabi-saque.jpg"); --header-position: center 35%; }
+
+/* ── PROFILE HEADER ──────────────────────────── */
+.profile-header-card {
+  display: flex; align-items: center; gap: 28px;
+  padding: 8px 0 40px; margin-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-avatar {
+  width: 96px; height: 96px; flex-shrink: 0;
+  border: 2px solid var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 38px; font-weight: 600; letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+
+.profile-name {
+  font-family: var(--font-display);
+  font-size: 36px; font-weight: 600; line-height: 1;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--text-primary); margin-bottom: 10px;
+}
+.profile-email { font-size: 15px; color: var(--text-muted); margin-bottom: 6px; }
+.profile-meta  {
+  font-size: 11px; font-weight: 600; color: var(--text-subtle);
+  text-transform: uppercase; letter-spacing: 0.18em;
+}
+
+/* ── SETTINGS OPTIONS ────────────────────────── */
+.settings-options { display: flex; flex-direction: column; gap: 12px; }
+
+.settings-option {
+  display: flex; align-items: center; gap: 18px;
+  width: 100%; padding: 18px 22px;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: inherit; text-align: left; cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.settings-option:hover    { border-color: var(--text-primary); }
+.settings-option.active   { border-color: var(--accent); background: var(--accent-dim); }
+.settings-option.disabled { opacity: 0.4; cursor: not-allowed; }
+.settings-option.disabled:hover { border-color: var(--border-light); }
+
+.settings-option-flag  { font-size: 24px; flex-shrink: 0; }
+.settings-option-title {
+  font-size: 14px; font-weight: 600; color: var(--text-primary);
+  text-transform: uppercase; letter-spacing: 0.14em;
+}
+.settings-option-desc  { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+.settings-option-check {
+  margin-left: auto; flex-shrink: 0;
+  font-size: 18px; font-weight: 700; color: var(--accent);
+}
+
+/* ── SETTINGS INFO ───────────────────────────── */
+.settings-info-grid { display: flex; flex-direction: column; }
+
+.settings-info-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 16px 0; border-bottom: 1px solid var(--border);
+}
+.settings-info-row:last-child { border-bottom: none; }
+
+.settings-info-label {
+  font-size: 12px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.18em;
+}
+.settings-info-value { font-size: 14px; color: var(--text-primary); font-weight: 500; text-align: right; }
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 700px) {
+  .profile-header-card { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .profile-name { font-size: 28px; }
+  .settings-info-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .settings-info-value { text-align: left; }
+}

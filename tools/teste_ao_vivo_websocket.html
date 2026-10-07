@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Teste — Análise ao Vivo via WebSocket</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #0a1220;
+    color: #e8eef8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 20px; margin-bottom: 4px; }
+  p.subtitle { color: #8aa0c4; font-size: 13px; margin-bottom: 20px; text-align: center; max-width: 500px; }
+
+  .controls { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; justify-content: center; }
+  select, input {
+    padding: 8px 12px; background: #0d2145; border: 1px solid #1a3265;
+    border-radius: 6px; color: #e8eef8; font-size: 13px;
+  }
+  button {
+    padding: 10px 22px; background: #4e8fff; border: none; border-radius: 8px;
+    color: white; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  button:hover { background: #6aa3ff; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.stop { background: #e05555; }
+  button.stop:hover { background: #f47070; }
+
+  .video-wrap {
+    position: relative; width: 100%; max-width: 480px;
+    background: #000; border-radius: 12px; overflow: hidden;
+    border: 1px solid #1a3265; display: none;
+  }
+  video { width: 100%; display: block; transform: scaleX(-1); }
+
+  .stats { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+  .stat-card {
+    background: #0d2145; border: 1px solid #1a3265; border-radius: 8px;
+    padding: 12px 20px; text-align: center; min-width: 100px;
+  }
+  .stat-label { font-size: 11px; color: #6a85b0; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .stat-value { font-size: 24px; font-weight: 700; }
+  .stat-value.hits { color: #38c4b0; }
+  .stat-value.errors { color: #f87171; }
+
+  #repList {
+    margin-top: 20px; width: 100%; max-width: 480px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .rep-row {
+    display: flex; justify-content: space-between; padding: 8px 12px;
+    border-radius: 6px; font-size: 12px; border-left: 3px solid transparent;
+  }
+  .rep-row.valid { background: rgba(56,196,176,0.08); border-left-color: #38c4b0; }
+  .rep-row.invalid { background: rgba(248,113,113,0.08); border-left-color: #f87171; }
+
+  #log { margin-top: 16px; font-size: 12px; color: #6a85b0; text-align: center; max-width: 480px; }
+</style>
+</head>
+<body>
+
+<h1>🔴 Teste — Análise Ao Vivo (WebSocket)</h1>
+<p class="subtitle">Conecta na sua webcam e manda os frames pro servidor Python em tempo real. Certifique-se que <code>python app.py</code> está rodando em localhost:5001.</p>
+
+<div class="controls">
+  <select id="skillSelect">
+    <option value="static_toque">Static Toque</option>
+    <option value="static_manchete">Static Manchete</option>
+  </select>
+  <button id="startBtn">🔴 Iniciar ao vivo</button>
+  <button id="stopBtn" class="stop" style="display:none;">⏹ Encerrar</button>
+</div>
+
+<div class="video-wrap" id="videoWrap">
+  <video id="video" autoplay playsinline muted></video>
+</div>
+
+<div class="stats" id="stats" style="display:none;">
+  <div class="stat-card">
+    <span class="stat-label">Repetições</span>
+    <span class="stat-value" id="repCount">0</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Acertos</span>
+    <span class="stat-value hits" id="hitCount">0</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Erros</span>
+    <span class="stat-value errors" id="errorCount">0</span>
+  </div>
+</div>
+
+<div id="repList"></div>
+<div id="log">Escolha a habilidade e clique em "Iniciar ao vivo".</div>
+
+<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
+<script>
+const startBtn = document.getElementById("startBtn");
+const stopBtn = document.getElementById("stopBtn");
+const skillSelect = document.getElementById("skillSelect");
+const videoWrap = document.getElementById("videoWrap");
+const video = document.getElementById("video");
+const stats = document.getElementById("stats");
+const repCount = document.getElementById("repCount");
+const hitCount = document.getElementById("hitCount");
+const errorCount = document.getElementById("errorCount");
+const repList = document.getElementById("repList");
+const log = document.getElementById("log");
+
+let socket = null;
+let stream = null;
+let captureInterval = null;
+let hits = 0, errors = 0;
+
+const SERVER_URL = "http://localhost:5001";
+const CAPTURE_FPS = 10; // manda 10 frames por segundo pro servidor (suficiente e leve)
+
+startBtn.addEventListener("click", async () => {
+  startBtn.disabled = true;
+  log.textContent = "Conectando no servidor Python...";
+
+  socket = io(SERVER_URL);
+
+  socket.on("connect", async () => {
+    log.textContent = "Conectado! Pedindo acesso à câmera...";
+    stream = await navigator.mediaDevices.getUserMedia({ video: { width: 480, height: 854 } });
+    video.srcObject = stream;
+    videoWrap.style.display = "block";
+
+    video.addEventListener("loadeddata", () => {
+      socket.emit("start_live", { skillType: skillSelect.value, fps: CAPTURE_FPS });
+    });
+  });
+
+  socket.on("live_started", (data) => {
+    log.textContent = `Analisando ao vivo — habilidade: ${data.skillType}. Faça o movimento!`;
+    stats.style.display = "flex";
+    startBtn.style.display = "none";
+    stopBtn.style.display = "inline-block";
+    startCapturing();
+  });
+
+  socket.on("analysis_update", (data) => {
+    if (data.newRepetitions && data.newRepetitions.length > 0) {
+      data.newRepetitions.forEach(rep => {
+        if (rep.provisionalValid) hits++; else errors++;
+        addRepRow(rep);
+      });
+      repCount.textContent = hits + errors;
+      hitCount.textContent = hits;
+      errorCount.textContent = errors;
+    }
+  });
+
+  socket.on("live_finished", (summary) => {
+    log.textContent = `Sessão encerrada. Total: ${summary.repetitionsDetected} repetições, ${summary.machineHits} acertos.`;
+  });
+
+  socket.on("error", (data) => {
+    log.textContent = "Erro: " + data.message;
+  });
+
+  socket.on("connect_error", () => {
+    log.textContent = "Não consegui conectar ao servidor Python. Ele está rodando em localhost:5001?";
+    startBtn.disabled = false;
+  });
+});
+
+function startCapturing() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 480;
+  canvas.height = 854;
+  const ctx = canvas.getContext("2d");
+
+  captureInterval = setInterval(() => {
+    if (!video.videoWidth) return;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+    socket.emit("frame", { image: dataUrl });
+  }, 1000 / CAPTURE_FPS);
+}
+
+function addRepRow(rep) {
+  const row = document.createElement("div");
+  row.className = `rep-row ${rep.provisionalValid ? "valid" : "invalid"}`;
+  row.innerHTML = `
+    <span>#${rep.index} — ${rep.timeSeconds}s</span>
+    <span>mãos: ${rep.handsDistanceRatio} | cotovelo: ${rep.leftElbowAngle}°/${rep.rightElbowAngle}°</span>
+    <span>${rep.provisionalValid ? "✅" : "❌"}</span>
+  `;
+  repList.prepend(row);
+}
+
+stopBtn.addEventListener("click", () => {
+  clearInterval(captureInterval);
+  socket.emit("stop_live");
+  if (stream) stream.getTracks().forEach(t => t.stop());
+  stopBtn.style.display = "none";
+  startBtn.style.display = "inline-block";
+  startBtn.disabled = false;
+  videoWrap.style.display = "none";
+});
+</script>
+</body>
+</html>

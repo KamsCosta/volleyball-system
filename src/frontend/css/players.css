@@ -1,221 +1,86 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+/* =========================
+   PLAYERS.CSS
+   Específico para: players.html, new-athlete.html,
+   athlete-detail.html, coaches.html
+   Requer: global.css (form, tabela, modal e botões vêm de lá)
+========================= */
+
+.page-header { --header-image: url("../assets/images/carol-ataque.jpg"); --header-position: center 35%; }
+
+/* ── COACHES ─────────────────────────────────── */
+.coach-avatar-row { display: flex; align-items: center; gap: 14px; }
+.coach-avatar {
+  width: 38px; height: 38px; flex-shrink: 0;
+  border: 1.5px solid var(--border-light);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--text-primary);
 }
 
-body {
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: white;
-  min-height: 100vh;
+.status-badge.active   { color: var(--green); }
+.status-badge.inactive { color: var(--red); }
+
+/* ── MODAL DE PERFIL ─────────────────────────── */
+.modal-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.modal-stat-card { padding: 20px 16px; border-right: 1px solid var(--border); }
+.modal-stat-card:last-child { border-right: none; }
+.modal-stat-label {
+  display: block; margin-bottom: 10px;
+  font-size: 10.5px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+.modal-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 30px; font-weight: 600; line-height: 1;
+  color: var(--text-primary);
 }
 
-.players-page {
-  min-height: 100vh;
-  padding: 2rem;
+.modal-tests { display: flex; flex-direction: column; margin-bottom: 16px; }
+.modal-test-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+}
+.modal-test-row:last-child { border-bottom: none; }
+
+/* ── ATHLETE DETAIL — faixa de números ───────── */
+.athlete-stats {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.athlete-stat-card { padding: 28px 20px; border-right: 1px solid var(--border); }
+.athlete-stat-card:last-child { border-right: none; }
+.athlete-stat-label {
+  display: block; margin-bottom: 14px;
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+.athlete-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 40px; font-weight: 500; line-height: 1;
+  color: var(--text-primary);
 }
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 1100px) {
+  .athlete-stats { grid-template-columns: repeat(3, 1fr); }
+  .athlete-stat-card:nth-child(3n) { border-right: none; }
+  .athlete-stat-card:nth-child(-n+3) { border-bottom: 1px solid var(--border); }
 }
-
-.topbar h1 {
-  font-size: 1.8rem;
-}
-
-.topbar-actions {
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  border-radius: 18px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-}
-
-.card h2 {
-  margin-bottom: 1rem;
-}
-
-.player-form .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-}
-
-.field label {
-  margin-bottom: 0.4rem;
-  font-size: 0.9rem;
-  color: #cbd5e1;
-}
-
-.field input {
-  padding: 0.85rem 1rem;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
-  outline: none;
-}
-
-.field input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.form-actions {
-  margin-top: 1rem;
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-}
-
-.btn {
-  border: none;
-  border-radius: 10px;
-  padding: 0.8rem 1.2rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.25s ease;
-}
-
-.btn.primary {
-  background: white;
-  color: black;
-}
-
-.btn.primary:hover {
-  background: #facc15;
-}
-
-.btn.secondary {
-  background: rgba(255, 255, 255, 0.12);
-  color: white;
-}
-
-.btn.secondary:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.btn.danger {
-  background: #dc2626;
-  color: white;
-}
-
-.btn.danger:hover {
-  background: #b91c1c;
-}
-
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.table-wrapper {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-thead {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-th, td {
-  padding: 0.9rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-td.actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.action-btn {
-  border: none;
-  border-radius: 8px;
-  padding: 0.45rem 0.8rem;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.action-btn.edit {
-  background: #f59e0b;
-  color: #111827;
-}
-
-.action-btn.delete {
-  background: #ef4444;
-  color: white;
-}
-
-.empty {
-  text-align: center;
-  color: #cbd5e1;
-}
-
-#formMsg {
-  margin-top: 1rem;
-}
-
-.message {
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  font-size: 0.9rem;
-}
-
-.message.success {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  color: #86efac;
-}
-
-.message.error {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  color: #fca5a5;
-}
-
-@media (max-width: 768px) {
-  .players-page {
-    padding: 1rem;
-  }
-
-  .topbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+@media (max-width: 700px) {
+  .athlete-stats { grid-template-columns: repeat(2, 1fr); }
+  .athlete-stat-card { border-bottom: 1px solid var(--border); }
+  .athlete-stat-card:nth-child(3n) { border-right: 1px solid var(--border); }
+  .athlete-stat-card:nth-child(2n) { border-right: none; }
+  .athlete-stat-value { font-size: 30px; }
+  .modal-stats { grid-template-columns: 1fr; }
+  .modal-stat-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .modal-stat-card:last-child { border-bottom: none; }
 }

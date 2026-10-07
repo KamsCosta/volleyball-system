@@ -1,0 +1,358 @@
+/* =========================
+   TEST.CSS
+   Específico para: new-test.html, test-list.html
+   Requer: global.css (form, tabela, modal e botões vêm de lá)
+========================= */
+
+.page-header { --header-image: url("../assets/images/login-bg.png"); --header-position: center 40%; }
+
+.score-display {
+  font-size: 12px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.16em;
+}
+.score-display strong {
+  font-family: var(--font-display);
+  font-size: 24px; color: var(--accent); letter-spacing: 0.02em;
+}
+
+/* ── SKILLS ──────────────────────────────────── */
+.skills-info {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; margin-bottom: 28px;
+  background: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  font-size: 14px; color: var(--text-muted);
+}
+.skills-info svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+.skills-info strong { color: var(--text-primary); }
+
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+.skill-group {
+  border: 1px solid var(--border);
+  padding: 22px 24px;
+  background: rgba(255,255,255,0.01);
+}
+.skill-group-title {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-light);
+  font-family: var(--font-display);
+  font-size: 17px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--text-primary);
+}
+.skill-group-icon { font-size: 16px; }
+
+.skill-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.skill-row:last-child { border-bottom: none; }
+.skill-row:has(.va-attach) { flex-wrap: wrap; }
+
+/* anexar vídeo na página New Test (só nas habilidades com análise por IA) */
+.va-attach {
+  flex-basis: 100%;
+  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  font-size: 12.5px;
+}
+.va-attach-btn {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 100%;
+  padding: 5px 10px; cursor: pointer;
+  border: 1px dashed var(--border-light); color: var(--text-muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+.va-attach-btn:hover { border-color: var(--accent); color: var(--text-primary); }
+.va-attach.has-file .va-attach-btn { border-style: solid; border-color: var(--accent); color: var(--text-primary); }
+.va-attach-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+.va-attach-remove {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted); font-size: 14px; padding: 4px 6px;
+}
+.va-attach-remove:hover { color: var(--red); }
+
+.va-attach-info {
+  margin: -16px 0 28px; padding: 12px 18px;
+  font-size: 13px; color: var(--text-muted);
+  border-left: 3px solid var(--border-light);
+}
+.va-new-test-title {
+  font-family: var(--font-display); font-size: 15px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-primary); margin-bottom: 10px;
+}
+.va-new-test-results { display: grid; gap: 18px; }
+
+/* "Ver como a IA analisou": vídeo anotado */
+.va-annotated { margin: 0 0 18px; font-size: 13px; color: var(--text-muted); }
+.va-annotated summary {
+  cursor: pointer; font-weight: 600; color: var(--text-primary);
+  padding: 10px 14px; border: 1px solid var(--border-light);
+}
+.va-annotated[open] summary { border-color: var(--accent); margin-bottom: 12px; }
+.va-annotated-video {
+  display: block; width: 100%; max-height: 70vh;
+  background: #000; border: 1px solid var(--border);
+}
+.va-speed { display: flex; align-items: center; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+.va-speed button {
+  background: none; border: 1px solid var(--border-light); color: var(--text-muted);
+  padding: 4px 10px; cursor: pointer; font-size: 12px;
+}
+.va-speed button.active { border-color: var(--accent); color: var(--text-primary); }
+.va-legend { margin: 6px 0 10px 18px; display: grid; gap: 3px; font-size: 12.5px; }
+.va-legend .lg-arm  { color: #facc15; }
+.va-legend .lg-body { color: var(--accent); }
+.va-original-link { font-size: 12.5px; color: var(--accent); }
+
+.skill-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.skill-name {
+  font-size: 14px; color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.skill-diff {
+  flex-shrink: 0;
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  padding: 2px 7px; border: 1px solid currentColor;
+}
+.skill-diff.easy   { color: var(--green); }
+.skill-diff.medium { color: var(--orange); }
+.skill-diff.hard   { color: var(--red); }
+
+.skill-input-wrap { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.skill-input {
+  width: 58px; padding: 8px 6px; text-align: center;
+  background: var(--bg-input);
+  border: 1px solid var(--border-light); border-radius: 0;
+  color: var(--text-primary);
+  font-family: var(--font-display); font-size: 18px; font-weight: 600;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.skill-input:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.skill-max    { font-size: 12px; color: var(--text-subtle); }
+.skill-errors { font-size: 12px; color: var(--red); min-width: 44px; text-align: right; }
+
+/* ── RESULT PREVIEW — faixa de números ───────── */
+.result-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.result-card { padding: 28px 22px; border-right: 1px solid var(--border); }
+.result-card:last-child { border-right: none; }
+.result-label {
+  display: block; margin-bottom: 14px;
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+.result-value {
+  display: block; margin-bottom: 8px;
+  font-family: var(--font-display);
+  font-size: 54px; font-weight: 500; line-height: 0.95;
+}
+.result-sub {
+  display: block;
+  font-size: 11px; font-weight: 600; color: var(--text-subtle);
+  text-transform: uppercase; letter-spacing: 0.16em;
+}
+
+.result-card.hits   .result-value { color: var(--green); }
+.result-card.errors .result-value { color: var(--red); }
+.result-card.pct    .result-value { color: var(--accent); }
+.result-card.class  .result-value { color: var(--orange); font-size: 28px; line-height: 1.6; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── TEST LIST ───────────────────────────────── */
+.filter-panel { padding: 24px 32px; }
+.filter-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+
+.category-badge.beginner,    .class-badge.beginner    { color: var(--purple); }
+.category-badge.development, .class-badge.development { color: var(--orange); }
+.class-badge.advanced                                 { color: var(--green); }
+
+.hit-rate-wrap { display: flex; align-items: center; gap: 10px; min-width: 130px; }
+.hit-rate-bar  { flex: 1; height: 3px; background: var(--border-light); min-width: 60px; }
+.hit-rate-fill { height: 100%; transition: width 0.4s var(--ease); }
+
+.coach-cell { min-width: 120px; }
+.coach-cell-name  { font-size: 14px; color: var(--text-primary); }
+.coach-cell-empty { font-size: 13px; color: var(--text-subtle); font-style: italic; }
+
+.table { min-width: 900px; }
+.actions-cell { flex-wrap: nowrap; }
+
+/* ── MODAL DE DETALHE ────────────────────────── */
+.modal-summary {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.summary-stat { padding: 20px 16px; border-right: 1px solid var(--border); }
+.summary-stat:last-child { border-right: none; }
+.summary-stat-label {
+  display: block; margin-bottom: 10px;
+  font-size: 10.5px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+.summary-stat-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 600; line-height: 1;
+}
+
+.modal-skills-title {
+  margin-bottom: 16px;
+  font-size: 12px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+.modal-skills { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+
+.skill-detail-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.skill-detail-name { font-size: 13px; color: var(--text-primary); min-width: 190px; flex-shrink: 0; }
+.skill-detail-bar-wrap { flex: 1; display: flex; align-items: center; gap: 10px; }
+.skill-detail-bar  { flex: 1; height: 3px; background: var(--border-light); }
+.skill-detail-fill { height: 100%; }
+.skill-detail-pct  { font-family: var(--font-display); font-size: 15px; font-weight: 600; min-width: 40px; text-align: right; }
+
+.modal-actions { padding-top: 20px; border-top: 1px solid var(--border); }
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 1100px) {
+  .skills-grid { grid-template-columns: 1fr; }
+  .result-grid { grid-template-columns: repeat(2, 1fr); }
+  .result-card:nth-child(2) { border-right: none; }
+  .result-card:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+}
+@media (max-width: 700px) {
+  .filter-panel { padding: 20px 18px; }
+  .filter-row { grid-template-columns: 1fr; }
+  .modal-summary { grid-template-columns: 1fr 1fr; }
+  .summary-stat:nth-child(2) { border-right: none; }
+  .summary-stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .skill-detail-name { min-width: 100%; }
+  .skill-group { padding: 18px 16px; }
+  .result-value { font-size: 40px; }
+}
+
+/* =========================
+   VIDEO ANALYSIS (IA)
+========================= */
+.va-block {
+  margin-top: 16px; padding: 18px;
+  background: rgba(78,143,255,0.04);
+  border: 1px dashed rgba(78,143,255,0.35);
+}
+
+.va-header { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.va-badge {
+  font-size: 10.5px; font-weight: 600; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.18em;
+  border: 1px solid rgba(78,143,255,0.4); padding: 4px 10px;
+}
+
+.va-upload-btn {
+  padding: 8px 16px;
+  border: 1.5px solid var(--accent); border-radius: 0;
+  background: none; color: var(--accent);
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.va-upload-btn:hover { background: var(--accent); color: #fff; }
+
+.va-result { margin-top: 16px; }
+
+.va-loading { font-size: 13px; color: var(--text-muted); padding: 12px 0; }
+.va-error   { font-size: 13px; color: var(--red); padding: 12px 0; }
+
+.va-comparison { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.va-compare-card {
+  flex: 1; text-align: center; padding: 16px;
+  border: 1px solid var(--border-light);
+}
+.va-compare-card.machine { border-color: rgba(78,143,255,0.45); }
+.va-compare-label {
+  display: block; margin-bottom: 8px;
+  font-size: 10.5px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.18em;
+}
+.va-compare-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 30px; font-weight: 600; color: var(--text-primary); line-height: 1;
+}
+.va-compare-vs {
+  font-size: 11px; font-weight: 600; color: var(--text-subtle);
+  text-transform: uppercase; letter-spacing: 0.2em;
+}
+
+.va-disclaimer {
+  font-size: 12px; color: var(--text-subtle); font-style: italic;
+  margin-bottom: 16px; padding: 10px 14px;
+  border-left: 2px solid var(--border-light);
+  background: rgba(255,255,255,0.02);
+}
+
+.va-reps-title, .va-review-title {
+  font-size: 11px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.18em;
+  margin-bottom: 10px;
+}
+.va-reps-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; max-height: 220px; overflow-y: auto; }
+
+.va-rep-row {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 9px 12px; font-size: 12.5px;
+  border-left: 2px solid transparent;
+}
+.va-rep-row.valid   { background: rgba(56,196,176,0.05);  border-left-color: var(--green); }
+.va-rep-row.invalid { background: rgba(248,113,113,0.05); border-left-color: var(--red); }
+
+.va-rep-index  { font-weight: 700; color: var(--text-primary); min-width: 28px; }
+.va-rep-time   { color: var(--text-muted); min-width: 44px; }
+.va-rep-metric { color: var(--text-muted); }
+.va-check      { color: var(--text-muted); white-space: nowrap; }
+.va-check.info { opacity: 0.6; }
+
+/* orientação de filmagem (abre e fecha) */
+.va-guide { margin: 10px 0 14px; font-size: 12.5px; color: var(--text-muted); }
+.va-guide summary { cursor: pointer; color: var(--text-primary); font-weight: 600; }
+.va-guide ul { margin: 8px 0 0 18px; display: grid; gap: 4px; }
+.va-rep-status { margin-left: auto; font-weight: 600; }
+
+.va-review { border-top: 1px solid var(--border); padding-top: 16px; }
+.va-review-buttons { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.va-agree-btn, .va-disagree-btn, .va-submit-correction-btn {
+  padding: 9px 18px; border-radius: 0; background: transparent;
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  cursor: pointer; transition: background 0.2s, color 0.2s;
+}
+.va-agree-btn    { color: var(--green);  border: 1.5px solid var(--green); }
+.va-disagree-btn { color: var(--orange); border: 1.5px solid var(--orange); }
+.va-agree-btn:hover    { background: var(--green);  color: #000; }
+.va-disagree-btn:hover { background: var(--orange); color: #000; }
+
+.va-correction { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+.va-correction-input, .va-correction-comment {
+  padding: 10px 14px;
+  background: var(--bg-input); border: 1px solid var(--border-light); border-radius: 0;
+  color: var(--text-primary); font-size: 14px; font-family: var(--font-body);
+  outline: none;
+}
+.va-correction-input:focus, .va-correction-comment:focus { border-color: var(--accent); }
+.va-correction-comment { min-height: 70px; resize: vertical; }
+.va-submit-correction-btn {
+  align-self: flex-start;
+  background: var(--accent); color: #fff; border: 1.5px solid var(--accent);
+}
+.va-submit-correction-btn:hover { background: var(--text-primary); border-color: var(--text-primary); color: #000; }
+
+.va-review-done {
+  font-size: 13px; color: var(--green); font-weight: 600;
+  background: rgba(56,196,176,0.06);
+  border-left: 3px solid var(--green);
+  padding: 12px 16px;
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- ícone do sistema e instalação no celular (gerados por tools/gerar_icones.py) -->
+  <link rel="icon" href="../assets/icons/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="../assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="../assets/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="../manifest.webmanifest" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="apple-mobile-web-app-title" content="Volleyball Performance" />
+  <title>Settings – Volleyball Performance</title>
+  <link rel="stylesheet" href="../css/global.css"/>
+  <link rel="stylesheet" href="../css/profile.css"/>
+</head>
+<body>
+<div class="layout">
+
+  <header class="topbar">
+  <a href="./home.html" class="brand" aria-label="Volleyball Performance, Home">
+    <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" aria-hidden="true"><defs><clipPath id="vbr0"><path d="M12.00 12.00 A7.43 7.43 0 0 1 12.00 2.00 A10.00 10.00 0 0 1 20.66 17.00 A7.43 7.43 0 0 0 12.00 12.00Z"/></clipPath><clipPath id="vbr1"><path d="M12.00 12.00 A7.43 7.43 0 0 1 20.66 17.00 A10.00 10.00 0 0 1 3.34 17.00 A7.43 7.43 0 0 0 12.00 12.00Z"/></clipPath><clipPath id="vbr2"><path d="M12.00 12.00 A7.43 7.43 0 0 1 3.34 17.00 A10.00 10.00 0 0 1 12.00 2.00 A7.43 7.43 0 0 0 12.00 12.00Z"/></clipPath></defs><g clip-path="url(#vbr0)" stroke-width="0.9"><circle cx="13.58" cy="19.26" r="9.13"/><circle cx="13.58" cy="19.26" r="10.83"/></g><g clip-path="url(#vbr1)" stroke-width="0.9"><circle cx="4.92" cy="9.74" r="9.13"/><circle cx="4.92" cy="9.74" r="10.83"/></g><g clip-path="url(#vbr2)" stroke-width="0.9"><circle cx="17.50" cy="7.00" r="9.13"/><circle cx="17.50" cy="7.00" r="10.83"/></g><path stroke-width="1.3" d="M12.00 12.00 A7.43 7.43 0 0 1 12.00 2.00 M12.00 12.00 A7.43 7.43 0 0 1 20.66 17.00 M12.00 12.00 A7.43 7.43 0 0 1 3.34 17.00"/><circle cx="12" cy="12" r="10" stroke-width="1.5"/></svg>
+    <span class="brand-name">Volleyball <strong>Performance</strong></span>
+  </a>
+
+  <nav class="topbar-nav">
+    <a href="./home.html" class="topbar-link">Home</a>
+    <a href="./dashboard.html" class="topbar-link">Dashboard</a>
+    <a href="./players.html" class="topbar-link">Athletes</a>
+    <a href="./test-list.html" class="topbar-link">Tests</a>
+    <a href="./coaches.html" class="topbar-link">Coaches</a>
+  </nav>
+
+  <div class="topbar-right">
+    <a href="./new-test.html" class="topbar-cta">New Test</a>
+    <button id="menuBtn" class="menu-btn" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div id="drawerBackdrop" class="drawer-backdrop"></div>
+<aside class="drawer" aria-label="Menu">
+  <button id="drawerClose" class="drawer-close" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+
+  <nav class="drawer-nav">
+    <span class="drawer-label">Overview</span>
+    <a href="./home.html" class="nav-item">Home</a>
+    <a href="./dashboard.html" class="nav-item">Dashboard</a>
+
+    <span class="drawer-label">Team</span>
+    <a href="./players.html" class="nav-item">Athletes</a>
+    <a href="./new-athlete.html" class="nav-item">New Athlete</a>
+    <a href="./coaches.html" class="nav-item">Coaches</a>
+
+    <span class="drawer-label">Evaluation</span>
+    <a href="./test-list.html" class="nav-item">Test List</a>
+    <a href="./new-test.html" class="nav-item">New Test</a>
+
+    <span class="drawer-label">Account</span>
+    <a href="./tifanny.html" class="nav-item nav-item-tribute">Tifanny</a>
+    <a href="./settings.html" class="nav-item">Settings</a>
+    <a href="./profile.html" class="nav-item">Profile</a>
+  </nav>
+
+  <button id="logoutBtn" class="logout-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17L21 12M21 12L16 7M21 12H9"/><path d="M9 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H9"/></svg>
+    Logout
+  </button>
+</aside>
+
+  <main class="main">
+    <div class="page-header">
+      <div>
+        <h1>Settings</h1>
+        <p>System preferences and information</p>
+      </div>
+    </div>
+
+    <!-- LANGUAGE -->
+    <section class="panel">
+      <div class="panel-header">
+        <h3>🌐 Language</h3>
+        <span class="panel-badge" id="currentLangBadge">English</span>
+      </div>
+      <div class="settings-options">
+        <button class="settings-option active" data-lang="en" id="langEn">
+          <span class="settings-option-flag">🇺🇸</span>
+          <div>
+            <div class="settings-option-title">English</div>
+            <div class="settings-option-desc">Interface in English</div>
+          </div>
+          <span class="settings-option-check" id="checkEn">✓</span>
+        </button>
+        <button class="settings-option" data-lang="pt" id="langPt">
+          <span class="settings-option-flag">🇧🇷</span>
+          <div>
+            <div class="settings-option-title">Português</div>
+            <div class="settings-option-desc">Interface em Português</div>
+          </div>
+          <span class="settings-option-check hidden" id="checkPt">✓</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- THEME -->
+    <section class="panel">
+      <div class="panel-header">
+        <h3>🎨 Theme</h3>
+        <span class="panel-badge">Dark Mode</span>
+      </div>
+      <div class="settings-options">
+        <button class="settings-option active">
+          <span class="settings-option-flag">🌙</span>
+          <div>
+            <div class="settings-option-title">Dark Mode</div>
+            <div class="settings-option-desc">Current theme, easy on the eyes</div>
+          </div>
+          <span class="settings-option-check">✓</span>
+        </button>
+        <button class="settings-option disabled" title="Coming soon">
+          <span class="settings-option-flag">☀️</span>
+          <div>
+            <div class="settings-option-title">Light Mode</div>
+            <div class="settings-option-desc">Coming soon</div>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- SYSTEM INFO -->
+    <section class="panel">
+      <div class="panel-header">
+        <h3>ℹ️ System Information</h3>
+      </div>
+      <div class="settings-info-grid">
+        <div class="settings-info-row">
+          <span class="settings-info-label">System</span>
+          <span class="settings-info-value">Volleyball Performance System</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Version</span>
+          <span class="settings-info-value">1.0.0</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Backend</span>
+          <span class="settings-info-value">ASP.NET Core 8 + C#</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Database</span>
+          <span class="settings-info-value">SQL Server Express</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Authentication</span>
+          <span class="settings-info-value">JWT + BCrypt</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Frontend</span>
+          <span class="settings-info-value">HTML5 + CSS3 + JavaScript ES Modules</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">API Status</span>
+          <span class="settings-info-value" id="apiStatus">
+            <span style="color:var(--text-muted);">Checking...</span>
+          </span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Total Athletes</span>
+          <span class="settings-info-value" id="infoAthletes">–</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Total Tests</span>
+          <span class="settings-info-value" id="infoTests">–</span>
+        </div>
+        <div class="settings-info-row">
+          <span class="settings-info-label">Total Coaches</span>
+          <span class="settings-info-value" id="infoCoaches">–</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer"><span>Volleyball Performance</span><span>&copy; 2026</span><span>Tracking every rep</span></footer>
+  </main>
+</div>
+<script type="module" src="../js/settings.js"></script>
+<script src="../js/nav.js" defer></script>
+</body>
+</html>

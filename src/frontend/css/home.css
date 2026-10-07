@@ -1,0 +1,100 @@
+/* =========================
+   HOME.CSS
+   Específico para home.html
+   Requer: global.css
+========================= */
+
+.hero {
+  height: 100vh; max-height: none;
+  --hero-image: url("../assets/images/login-bg.png");
+  --hero-position: 60% 30%;
+}
+
+/* ── SUMMARY — números grandes em faixa ───────── */
+.summary-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 56px;
+}
+
+.summary-card {
+  padding: 36px 28px;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 20px;
+  transition: background 0.3s var(--ease);
+}
+.summary-card:last-child { border-right: none; }
+.summary-card:hover { background: var(--bg-card); }
+
+.summary-icon { width: 22px; height: 22px; }
+.summary-icon svg { width: 22px; height: 22px; }
+.summary-icon.athletes  { color: var(--icon-athletes); }
+.summary-icon.recent    { color: var(--icon-coaches); }
+.summary-icon.positions { color: var(--icon-tests); }
+
+.summary-label {
+  display: block; margin-bottom: 10px;
+  font-size: 12px; font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.22em;
+}
+.summary-value {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 4.5vw, 64px);
+  font-weight: 500; line-height: 1;
+  color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ── ACTIVITY FEED ───────────────────────────── */
+.activity-feed { display: flex; flex-direction: column; }
+
+.activity-item {
+  display: flex; align-items: center; gap: 18px;
+  padding: 18px 4px; border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-item:hover { background: rgba(255,255,255,0.02); }
+
+.activity-avatar {
+  width: 44px; height: 44px; flex-shrink: 0;
+  border: 1.5px solid var(--border-light);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--text-primary);
+}
+
+.activity-info { flex: 1; min-width: 0; }
+.activity-name {
+  font-size: 15px; font-weight: 600; color: var(--text-primary);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.activity-detail { font-size: 13px; color: var(--text-muted); }
+
+.activity-meta { text-align: right; flex-shrink: 0; }
+.activity-number {
+  display: block; margin-bottom: 2px;
+  font-family: var(--font-display);
+  font-size: 24px; font-weight: 600; color: var(--accent); line-height: 1;
+}
+.activity-date {
+  font-size: 11px; font-weight: 600; color: var(--text-subtle);
+  text-transform: uppercase; letter-spacing: 0.14em;
+}
+
+.activity-loading, .activity-empty {
+  text-align: center; padding: 40px; font-size: 14px; color: var(--text-muted);
+}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media (max-width: 900px) {
+  .summary-grid { grid-template-columns: 1fr; }
+  .summary-card { border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; align-items: center; justify-content: space-between; padding: 24px 8px; }
+  .summary-card:last-child { border-bottom: none; }
+  .summary-card > div:last-child { text-align: right; }
+}

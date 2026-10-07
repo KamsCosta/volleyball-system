@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using VolleyballSystem.API.Data;
-using VolleyballSystem.API.Models;
 using VolleyballSystem.API.DTO;
+using VolleyballSystem.API.Models;
 
 namespace VolleyballSystem.API.Services
 {
@@ -20,56 +20,86 @@ namespace VolleyballSystem.API.Services
         public AuthService(ApplicationDbContext context, IConfiguration config)
         {
             _context = context;
-            _config = config;
+            _config  = config;
         }
 
-        public async Task<User> RegisterUser(SignUpRequest request)
+        public async Task<User> RegisterUser(SignUpRequest model)
         {
-            bool emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
-            if (emailExists)
+            var exists = await _context.Users
+                .AnyAsync(u => u.Email == model.Email);
+
+            if (exists)
             {
-                throw new InvalidOperationException("Este e-mail já está em uso.");
+                // Auditoria
+                _context.AuditLogs.Add(new AuditLog
+                {
+                    Action  = "SIGNUP",
+                    Email   = model.Email,
+                    Success = false,
+                    Details = "Email already in use"
+                });
+                await _context.SaveChangesAsync();
+                throw new InvalidOperationException("Email already in use.");
             }
 
-            string hashedPassword = HashPassword(request.Password);
-            var newUser = new User
+            var user = new User
             {
-                Name = request.Name,
-                Email = request.Email,
-                PasswordHash = hashedPassword,
-                CreatedAt = DateTime.UtcNow
+                Name         = model.Name,
+                Email        = model.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                CreatedAt    = DateTime.UtcNow
             };
 
-            _context.Users.Add(newUser);
+            _context.Users.Add(user);
+
+            // Auditoria
+            _context.AuditLogs.Add(new AuditLog
+            {
+                Action  = "SIGNUP",
+                Email   = model.Email,
+                Success = true,
+                Details = "Account created successfully"
+            });
+
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<UserLoginResponse> LoginUser(LoginRequest model)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == model.Email);
+
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+            {
+                // Auditoria
+                _context.AuditLogs.Add(new AuditLog
+                {
+                    Action  = "LOGIN",
+                    Email   = model.Email,
+                    Success = false,
+                    Details = "Invalid credentials"
+                });
+                await _context.SaveChangesAsync();
+                throw new InvalidOperationException("Invalid email or password.");
+            }
+
+            var token = GenerateJwtToken(user);
+
+            // Auditoria
+            _context.AuditLogs.Add(new AuditLog
+            {
+                Action  = "LOGIN",
+                Email   = model.Email,
+                Success = true,
+                Details = "Login successful"
+            });
             await _context.SaveChangesAsync();
 
-            return newUser;
-        }
-
-        private string HashPassword(string password)
-        {
-            return $"HASH_SECRET_{password.GetHashCode()}";
-        }
-
-        public async Task<LoginResponse> LoginUser(LoginRequest request)
-        {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-
-            if (user == null)
-                throw new InvalidOperationException("Usuário não encontrado.");
-
-            string hashedPassword = HashPassword(request.Password);
-
-            if (user.PasswordHash != hashedPassword)
-                throw new InvalidOperationException("Senha incorreta.");
-
-            // 👉 gera token JWT
-            string token = GenerateJwtToken(user);
-
-            return new LoginResponse
+            return new UserLoginResponse
             {
-                Id = user.Id,
-                Name = user.Name,
+                Id    = user.Id,
+                Name  = user.Name,
                 Email = user.Email,
                 Token = token
             };
@@ -77,26 +107,33 @@ namespace VolleyballSystem.API.Services
 
         private string GenerateJwtToken(User user)
         {
-            var secret = _config["Jwt:Secret"];
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+            var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Secret"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("name", user.Name)
+                new Claim("sub",   user.Id.ToString()),
+                new Claim("email", user.Email),
+                new Claim("name",  user.Name)
             };
 
             var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(3),
+                issuer:             _config["Jwt:Issuer"],
+                audience:           _config["Jwt:Audience"],
+                claims:             claims,
+                expires:            DateTime.UtcNow.AddHours(8),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+    }
+
+    public class UserLoginResponse
+    {
+        public int    Id    { get; set; }
+        public string Name  { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Token { get; set; } = string.Empty;
     }
 }

@@ -33,7 +33,7 @@ namespace VolleyballSystem.API.Controllers
         {
             var player = await _playerService.GetByIdAsync(id);
             if (player == null)
-                return NotFound(new { message = "Atleta não encontrado." });
+                return NotFound(new { message = "Athlete not found." });
 
             return Ok(player);
         }
@@ -67,7 +67,7 @@ namespace VolleyballSystem.API.Controllers
             {
                 var player = await _playerService.UpdateAsync(id, request);
                 if (player == null)
-                    return NotFound(new { message = "Atleta não encontrado." });
+                    return NotFound(new { message = "Athlete not found." });
 
                 return Ok(player);
             }
@@ -83,7 +83,7 @@ namespace VolleyballSystem.API.Controllers
         {
             var deleted = await _playerService.DeleteAsync(id);
             if (!deleted)
-                return NotFound(new { message = "Atleta não encontrado." });
+                return NotFound(new { message = "Athlete not found." });
 
             return Ok(new { message = "Atleta removido com sucesso." });
         }
